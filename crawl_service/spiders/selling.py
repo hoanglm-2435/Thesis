@@ -4,17 +4,18 @@ from scrapy_splash import SplashRequest
 
 
 class CrawlServiceItem(scrapy.Item):
-    shop_name = scrapy.Field()
-    product_count = scrapy.Field()
-    average_rate = scrapy.Field()
-    follower = scrapy.Field()
+    product_name = scrapy.Field()
+    price = scrapy.Field()
+    price_sale = scrapy.Field()
+    sold_count = scrapy.Field()
+    location = scrapy.Field()
 
 
-class ShopeeSpider(scrapy.Spider):
-    name = "shopee"
+class SellingSpider(scrapy.Spider):
+    name = "selling"
     allowed_domains = ["shopee.vn"]
 
-    start_urls = ["https://shopee.vn/search_user?keyword=sneakers"]
+    start_urls = ["https://shopee.vn/search?keyword=sneakers&sortBy=sales"]
 
     script = """
         function main(splash)
@@ -45,15 +46,17 @@ class ShopeeSpider(scrapy.Spider):
 
     def parse(self, response):
         item = CrawlServiceItem()
-        for data in response.css("div.shopee-search-user-item--full"):
-            item["shop_name"] = data.css(
-                "div.shopee-search-user-item__nickname ::text").extract_first()
-            item["product_count"] = data.css(
-                "div.shopee-search-user-seller-info-item__header > span.shopee-search-user-seller-info-item__primary-text ::text").extract_first()
-            item["average_rate"] = data.css(
-                "svg.icon-rating + span.shopee-search-user-seller-info-item__primary-text ::text").extract()
-            item["follower"] = data.css(
-                "div.shopee-search-user-item__follow-count > span:nth-child(1) ::text").extract()
+        for data in response.css("div.shopee-search-item-result__item"):
+            item["product_name"] = data.css(
+                "div._1co5xN ::text").extract_first()
+            item["price"] = data.css(
+                "div.QmqjGn + div._2vQ-UF ::text").extract_first()
+            item["price_sale"] = data.css(
+                "div._1w9jLI._1DGuEV._7uLl65 span:last-child ::text").extract()
+            item["sold_count"] = data.css(
+                "div._245-SC ::text").extract()
+            item["location"] = data.css(
+                "div._41f1_p ::text").extract()
             yield item
 
         yield SplashRequest(
@@ -65,7 +68,7 @@ class ShopeeSpider(scrapy.Spider):
                     "args": {
                         'wait': 5,
                         "lua_source": self.script,
-                    }
+                    },
                 }
             },
         )

@@ -1,5 +1,7 @@
-# Crawler-JS
-Dùng scrapy-splash kết hợp lua script để crawl các trang web sử dụng Javascript (websosanh)
+# Crawler
+
+Dùng scrapy-splash kết hợp lua script để crawl
+
 ```
 ├── crawl_service
 │   ├── __init__.py
@@ -10,32 +12,33 @@ Dùng scrapy-splash kết hợp lua script để crawl các trang web sử dụn
 │   ├── settings.py
 │   └── spiders
 │       ├── __init__.py
-│       └── websosanh.py
-        └── lazada.py
+│       └── shopee.py
 ├── requirements.txt
 └── scrapy.cfg
 ```
 
-- Cài đặt Splash 
+- Cài đặt Splash
 
-Cài Docker sau đó chạy 
+Cài Docker sau đó chạy
+
 ```
 $ sudo docker pull scrapinghub/splash
 ```
+
 và
+
 ```
 $ sudo docker run -p 8050:8050 scrapinghub/splash
 ```
+
 - Cài các thư viện cần thiết khác ( Nên dùng virtualenv )
+
 ```
 pip install -r requirements.txt
 ```
-- Chạy script 
+
+- Chạy command để crawl
+
 ```
-python run.py
-```
-hoặc 
-```
-scrapy crawl wss 
-scrapy crawl lazada
+scrapy crawl shopee
 ```
