@@ -40,6 +40,7 @@ class SellingSpider(scrapy.Spider):
                 callback=self.parse,
                 args={
                     'wait': 5,
+                    'images': 0,
                     "lua_source": self.script,
                 }
             )
@@ -48,15 +49,15 @@ class SellingSpider(scrapy.Spider):
         item = CrawlServiceItem()
         for data in response.css("div.shopee-search-item-result__item"):
             item["product_name"] = data.css(
-                "div._1co5xN ::text").extract_first()
+                "div._36CEnF ::text").extract_first()
             item["price"] = data.css(
-                "div.QmqjGn + div._2vQ-UF ::text").extract_first()
+                "div._32hnQt div:first-child span:last-child ::text").extract_first()
             item["price_sale"] = data.css(
-                "div._1w9jLI._1DGuEV._7uLl65 span:last-child ::text").extract()
+                "div._5W0f35 span:last-child ::text").extract()
             item["sold_count"] = data.css(
-                "div._245-SC ::text").extract()
+                "div.go5yPW ::text").extract()
             item["location"] = data.css(
-                "div._41f1_p ::text").extract()
+                "div._2CWevj ::text").extract()
             yield item
 
         yield SplashRequest(
@@ -67,6 +68,7 @@ class SellingSpider(scrapy.Spider):
                     "endpoint": "execute",
                     "args": {
                         'wait': 5,
+                        'images': 0,
                         "lua_source": self.script,
                     },
                 }
