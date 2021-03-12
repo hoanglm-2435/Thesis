@@ -106,5 +106,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
-DOWNLOAD_DELAY = 5
+DOWNLOAD_DELAY = 10
 FEED_EXPORT_ENCODING = 'utf-8'
