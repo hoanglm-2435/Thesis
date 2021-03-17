@@ -17,38 +17,35 @@ class SellingSpider(scrapy.Spider):
 
     start_urls = ["https://shopee.vn/search?keyword=sneakers&sortBy=sales"]
     
-    script = """
+    script = '''
     function main(splash)
-        splash.resource_timeout = 10.0
-        splash.images_enabled = false
-        splash.plugins_enabled = false
-        local num_scrolls = 20
-        splash:set_viewport_full()
-        local scroll_delay = 10
-        local is_down = splash:jsfunc(
-            "function() { return((window.innerHeight + window.scrollY) >= document.body.offsetHeight);}"
-            )
+        local num_scrolls = 10
+        local scroll_delay = 1
 
         local scroll_to = splash:jsfunc("window.scrollTo")
         local get_body_height = splash:jsfunc(
             "function() {return document.body.scrollHeight;}"
         )
         assert(splash:go(splash.args.url))
+        assert(splash:wait(2))
+        assert(splash:runjs("document.querySelector('button.shopee-icon-button.shopee-icon-button--right').click()"))
+        assert(splash:wait(2))
 
-        assert(splash:wait(5))
-        assert(splash:runjs("document.querySelector('button.shopee-icon-button.shopee-icon-button--right').click();"))
-        assert(splash:wait(5))
-        while not is_down() do
-            scroll_to(0, get_body_height())
-            splash:wait(scroll_delay)
-        end 
-        assert(splash:wait(5))       
-        return { 
+        for _ = 1, num_scrolls do
+            local height = get_body_height()
+            for i = 1, 10 do
+                scroll_to(0, height * i/10)
+                splash:wait(scroll_delay/10)
+            end
+        end  
+        assert(splash:wait(2))
+        
+        return {
             html = splash:html(),
             url = splash:url(),
         }
     end
-    """
+    '''
 
     def start_requests(self):
         for url in self.start_urls:
@@ -57,9 +54,11 @@ class SellingSpider(scrapy.Spider):
                 endpoint="render.html",
                 callback=self.parse,
                 args={
-                    'wait': 5,
+                    'wait': 2,
                     "lua_source": self.script,
-                }
+                    'viewport': '3964x3964',
+                },
+                dont_filter=True
             )
 
     def parse(self, response):
@@ -70,11 +69,11 @@ class SellingSpider(scrapy.Spider):
             item["price"] = data.css(
                 "div._32hnQt div:first-child span:last-child ::text").extract_first()
             item["price_sale"] = data.css(
-                "div._5W0f35 span:last-child ::text").extract()
+                "div._5W0f35 span:last-child ::text").extract_first()
             item["sold_count"] = data.css(
-                "div.go5yPW ::text").extract()
+                "div.go5yPW ::text").extract_first()
             item["location"] = data.css(
-                "div._2CWevj ::text").extract()
+                "div._2CWevj ::text").extract_first()
             yield item
 
         yield SplashRequest(
@@ -84,9 +83,11 @@ class SellingSpider(scrapy.Spider):
                 "splash": {
                     "endpoint": "execute",
                     "args": {
-                        'wait': 5,
+                        'wait': 2,
                         "lua_source": self.script,
+                        'viewport': '3964x3964',
                     },
                 }
             },
+            dont_filter=True
         )
