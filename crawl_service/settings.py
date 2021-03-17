@@ -23,7 +23,7 @@ ROBOTSTXT_OBEY = False
 
 
 SPLASH_URL = 'http://localhost:8050'
-DUPEFILTER_CLASS = 'scrapy.dupefilters.BaseDupeFilter'
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 COOKIES_ENABLED = True
 SPLASH_COOKIES_DEBUG = False

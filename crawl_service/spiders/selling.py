@@ -84,6 +84,8 @@ class SellingSpider(scrapy.Spider):
                     "endpoint": "execute",
                     "args": {
                         'wait': 2,
+                        'html': 1,
+                        'url': response.url,
                         "lua_source": self.script,
                         'viewport': '3964x3964',
                     },

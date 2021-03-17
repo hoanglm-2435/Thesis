@@ -54,9 +54,9 @@ class LazadaSpider(scrapy.Spider):
             item["price_sale"] = data.css(
                 "div.c3KeDq > div.c3lr34 > span.c1-B2V > del ::text").extract()
             item["rating_number"] = data.css(
-                "div.c3KeDq > div.c15YQ9 > div > span ::text").extract()
+                "div.c3KeDq > div.c15YQ9 > div > span ::text").extract_first()
             item["location"] = data.css(
-                "div.c3KeDq > div.c15YQ9 > span ::text").extract()
+                "div.c3KeDq > div.c15YQ9 > span ::text").extract_first()
             yield item
 
         yield SplashRequest(

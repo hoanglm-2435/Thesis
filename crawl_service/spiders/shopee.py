@@ -40,7 +40,8 @@ class ShopeeSpider(scrapy.Spider):
                 args={
                     'wait': 5,
                     "lua_source": self.script,
-                }
+                },
+                dont_filter=True,
             )
 
     def parse(self, response):
@@ -51,9 +52,9 @@ class ShopeeSpider(scrapy.Spider):
             item["product_count"] = data.css(
                 "div.shopee-search-user-seller-info-item__header > span.shopee-search-user-seller-info-item__primary-text ::text").extract_first()
             item["average_rate"] = data.css(
-                "svg.icon-rating + span.shopee-search-user-seller-info-item__primary-text ::text").extract()
+                "svg.icon-rating + span.shopee-search-user-seller-info-item__primary-text ::text").extract_first()
             item["follower"] = data.css(
-                "div.shopee-search-user-item__follow-count > span:nth-child(1) ::text").extract()
+                "div.shopee-search-user-item__follow-count > span:nth-child(1) ::text").extract_first()
             yield item
 
         yield SplashRequest(
@@ -68,4 +69,5 @@ class ShopeeSpider(scrapy.Spider):
                     }
                 }
             },
+            dont_filter=True,
         )
