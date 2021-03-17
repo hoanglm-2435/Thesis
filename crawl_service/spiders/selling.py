@@ -67,9 +67,12 @@ class SellingSpider(scrapy.Spider):
             item["product_name"] = data.css(
                 "div._36CEnF ::text").extract_first()
             item["price"] = data.css(
-                "div._32hnQt div:first-child span:last-child ::text").extract_first()
-            item["price_sale"] = data.css(
-                "div._5W0f35 span:last-child ::text").extract_first()
+                "div.WTFwws._1lK1eK._5W0f35 span:last-child ::text").extract_first()
+            if data.css("div.WTFwws._3f05Zc._3_-SiN"):
+                item["price_sale"] = data.css(
+                "div.WTFwws._3f05Zc._3_-SiN ::text").extract_first()
+            else:
+                item["price_sale"] = data.css("div.WTFwws._1lK1eK._5W0f35 > span._29R_un:nth-child(2) ::text").extract_first()
             item["sold_count"] = data.css(
                 "div.go5yPW ::text").extract_first()
             item["location"] = data.css(
