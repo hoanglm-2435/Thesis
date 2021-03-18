@@ -16,7 +16,7 @@ class SellingSpider(scrapy.Spider):
     allowed_domains = ["shopee.vn"]
 
     start_urls = ["https://shopee.vn/search?keyword=sneakers&sortBy=sales"]
-    
+
     script = '''
     function main(splash)
         local num_scrolls = 10
@@ -27,9 +27,9 @@ class SellingSpider(scrapy.Spider):
             "function() {return document.body.scrollHeight;}"
         )
         assert(splash:go(splash.args.url))
-        assert(splash:wait(2))
+        assert(splash:wait(5))
         assert(splash:runjs("document.querySelector('button.shopee-icon-button.shopee-icon-button--right').click()"))
-        assert(splash:wait(2))
+        assert(splash:wait(5))
 
         for _ = 1, num_scrolls do
             local height = get_body_height()
@@ -38,7 +38,7 @@ class SellingSpider(scrapy.Spider):
                 splash:wait(scroll_delay/10)
             end
         end  
-        assert(splash:wait(2))
+        assert(splash:wait(5))
         
         return {
             html = splash:html(),
@@ -54,7 +54,7 @@ class SellingSpider(scrapy.Spider):
                 endpoint="render.html",
                 callback=self.parse,
                 args={
-                    'wait': 2,
+                    'wait': 5,
                     "lua_source": self.script,
                     'viewport': '3964x3964',
                 },
@@ -69,10 +69,15 @@ class SellingSpider(scrapy.Spider):
             item["price"] = data.css(
                 "div.WTFwws._1lK1eK._5W0f35 span:last-child ::text").extract_first()
             if data.css("div.WTFwws._3f05Zc._3_-SiN"):
+                item["price"] = data.css(
+                    "div.WTFwws._3f05Zc._3_-SiN ::text").extract_first()
                 item["price_sale"] = data.css(
-                "div.WTFwws._3f05Zc._3_-SiN ::text").extract_first()
+                    "div.WTFwws._1lK1eK._5W0f35 span:last-child ::text").extract_first()
             else:
-                item["price_sale"] = data.css("div.WTFwws._1lK1eK._5W0f35 > span._29R_un:nth-child(2) ::text").extract_first()
+                item["price"] = data.css(
+                    "div.WTFwws._1lK1eK._5W0f35 > span._29R_un:last-child ::text").extract_first()
+                item["price_sale"] = data.css(
+                    "div.WTFwws._1lK1eK._5W0f35 > span._29R_un:nth-child(2) ::text").extract_first()
             item["sold_count"] = data.css(
                 "div.go5yPW ::text").extract_first()
             item["location"] = data.css(
@@ -86,8 +91,7 @@ class SellingSpider(scrapy.Spider):
                 "splash": {
                     "endpoint": "execute",
                     "args": {
-                        'wait': 2,
-                        'html': 1,
+                        'wait': 5,
                         'url': response.url,
                         "lua_source": self.script,
                         'viewport': '3964x3964',
