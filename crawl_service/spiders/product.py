@@ -16,7 +16,7 @@ class ProductSpider(scrapy.Spider):
     name = "product"
     allowed_domains = ["shopee.vn"]
 
-    start_urls = ["https://shopee.vn/shop/151338284/search"]
+    start_urls = ["https://shopee.vn/shop/191682356/search"]
 
     render_script = '''
     function main(splash)
@@ -30,7 +30,7 @@ class ProductSpider(scrapy.Spider):
         )
         assert(splash:go(splash.args.url))
 
-        assert(splash:wait(2))
+        assert(splash:wait(5))
         for _ = 1, num_scrolls do
             local height = get_body_height()
             for i = 1, 10 do
@@ -38,7 +38,7 @@ class ProductSpider(scrapy.Spider):
                 splash:wait(scroll_delay/10)
             end
         end  
-        assert(splash:wait(2))
+        assert(splash:wait(5))
 
         return {
             cookies = splash:get_cookies(),
@@ -87,8 +87,8 @@ class ProductSpider(scrapy.Spider):
                 endpoint="render.html",
                 callback=self.parse,
                 args={
-                    'wait': 2,
-                    'viewport': '3964x3964',
+                    'wait': 5,
+                    'viewport': '2573x2573',
                 },
                 dont_filter=True
             )
@@ -102,45 +102,54 @@ class ProductSpider(scrapy.Spider):
                 endpoint="render.html",
                 callback=self.parse_product,
                 args={
-                    'wait': 2,
+                    'wait': 5,
                     "lua_source": self.render_script,
-                    'viewport': '3964x3964',
+                    'viewport': '2573x2573',
                 },
                 dont_filter=True,
             )
 
-        print("NEXT PAGE")
-
-        yield SplashRequest(
-            url=response.url,
-            callback=self.parse,
-            meta={
-                "splash": {
-                    "endpoint": "execute",
-                    "args": {
-                        'wait': 2,
-                        'url': response.url,
-                        "lua_source": self.pagination_script,
-                        'viewport': '3964x3964',
-                    },
-                }
-            },
-            dont_filter=True
-        )
+        current_page = response.css(
+            'span.shopee-mini-page-controller__current ::text').extract_first()
+        total_page = response.css(
+            "span.shopee-mini-page-controller__total ::text").extract_first()
+        if current_page < total_page:
+            yield SplashRequest(
+                url=response.url,
+                callback=self.parse,
+                meta={
+                    "splash": {
+                        "endpoint": "execute",
+                        "args": {
+                            'wait': 5,
+                            'url': response.url,
+                            "lua_source": self.pagination_script,
+                            'viewport': '2573x2573',
+                        },
+                    }
+                },
+                dont_filter=True
+            )
 
     def parse_product(self, response):
         item = CrawlServiceItem()
 
         item["product_name"] = response.css(
             "div.attM6y > span ::text").extract_first()
-        item["price"] = response.css(
+
+        price = response.css(
             "div._3e_UQT ::text").extract_first()
+        item["price"] = int(float(price.strip('₫')))
+
         item["rating"] = response.css(
             "div.OitLRu._1mYa1t ::text").extract_first()
+
         item["reviews"] = response.css(
             "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first()
-        item["stock_available"] = response.css(
-            "div._1afiLm > div:nth-child(3) > div ::text").extract_first()
+
+        item["stock_available"] = response.xpath(
+            "//label[text()='Kho hàng']/following::div[1]/text()").extract_first()
+
         item["sold_count"] = response.css(
             "div.aca9MM ::text").extract_first()
 
