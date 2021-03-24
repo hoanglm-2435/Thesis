@@ -7,12 +7,14 @@
 
 import scrapy
 
+
 class OfficalShopItem(scrapy.Item):
     name = scrapy.Field()
     url = scrapy.Field()
     product_count = scrapy.Field()
     rate_average = scrapy.Field()
     follower = scrapy.Field()
+
 
 class ProductItem(scrapy.Item):
     name = scrapy.Field()
@@ -21,3 +23,8 @@ class ProductItem(scrapy.Item):
     sold = scrapy.Field()
     reviews = scrapy.Field()
     rating = scrapy.Field()
+
+
+class ShopeeMallItem(scrapy.Item):
+    name = scrapy.Field()
+    url = scrapy.Field()
