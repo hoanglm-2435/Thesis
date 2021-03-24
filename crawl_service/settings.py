@@ -84,7 +84,15 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     'crawl_service.pipelines.CrawlServicePipeline': 300,
 }
-
+# ITEM_PIPELINES = {
+#     'scrapy_mysql_pipeline.MySQLPipeline': 300,
+# }
+# MYSQL_HOST = 'localhost'
+# MYSQL_DB = 'shopee_crawler'
+# MYSQL_TABLE = 'products'
+# MYSQL_USER = 'root'
+# MYSQL_PASSWORD = 'hoangminh99'
+# MYSQ_PORT = 3306
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -105,6 +113,6 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:7.0.1) Gecko/20100101 Firefox/7.7'
+USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36'
 DOWNLOAD_DELAY = 10
 FEED_EXPORT_ENCODING = 'utf-8'
