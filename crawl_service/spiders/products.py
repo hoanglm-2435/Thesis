@@ -1,22 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy_splash import SplashRequest
+from crawl_service.items import ProductItem
 
-
-class CrawlServiceItem(scrapy.Item):
-    product_name = scrapy.Field()
-    price = scrapy.Field()
-    stock_available = scrapy.Field()
-    sold_count = scrapy.Field()
-    reviews = scrapy.Field()
-    rating = scrapy.Field()
-
-
-class ProductSpider(scrapy.Spider):
-    name = "product"
+class ProductsSpider(scrapy.Spider):
+    name = "products"
     allowed_domains = ["shopee.vn"]
 
-    start_urls = ["https://shopee.vn/shop/191682356/search"]
+    start_urls = ["https://shopee.vn/giayhapu"]
 
     render_script = '''
     function main(splash)
@@ -132,25 +123,25 @@ class ProductSpider(scrapy.Spider):
             )
 
     def parse_product(self, response):
-        item = CrawlServiceItem()
+        item = ProductItem()
 
-        item["product_name"] = response.css(
+        item["name"] = response.css(
             "div.attM6y > span ::text").extract_first()
 
         price = response.css(
             "div._3e_UQT ::text").extract_first()
-        item["price"] = int(float(price.strip('₫')))
+        item["price"] = price
 
-        item["rating"] = response.css(
-            "div.OitLRu._1mYa1t ::text").extract_first()
+        item["rating"] = float(response.css(
+            "div.OitLRu._1mYa1t ::text").extract_first() or 0)
 
-        item["reviews"] = response.css(
-            "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first()
+        item["reviews"] = int(response.css(
+            "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first() or 0)
 
-        item["stock_available"] = response.xpath(
-            "//label[text()='Kho hàng']/following::div[1]/text()").extract_first()
+        item["stock"] = int(response.xpath(
+            "//label[text()='Kho hàng']/following::div[1]/text()").extract_first())
 
-        item["sold_count"] = response.css(
+        item["sold"] = response.css(
             "div.aca9MM ::text").extract_first()
 
         yield item

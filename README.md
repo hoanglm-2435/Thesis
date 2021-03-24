@@ -40,5 +40,11 @@ pip install -r requirements.txt
 - Chạy command để crawl
 
 ```
-scrapy crawl shopee
+scrapy crawl #spider_name
+```
+- Cài đặt MySQLdb
+```
+sudo apt-get install python-mysqldb  #Python2
+
+sudo apt-get install python3-mysqldb #Python3
 ```
