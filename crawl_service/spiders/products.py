@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import MySQLdb
 from scrapy_splash import SplashRequest
 from crawl_service.items import ProductItem
+from crawl_service.queries.readdata import dataReader
 
 class ProductsSpider(scrapy.Spider):
     name = "products"
     allowed_domains = ["shopee.vn"]
-
-    start_urls = ["https://shopee.vn/giayhapu"]
+    
+    # start_urls = dataReader(spiderName='shopee_mall')
+    start_urls = [
+        "https://shopee.vn/shop/76334547/search?shopCollection=10993855",
+        "https://shopee.vn/depthailannam",
+        "https://shopee.vn/aokang_flagship_store",
+        "https://shopee.vn/bentonivietnam.official",
+    ]
 
     render_script = '''
     function main(splash)
@@ -21,7 +29,7 @@ class ProductsSpider(scrapy.Spider):
         )
         assert(splash:go(splash.args.url))
 
-        assert(splash:wait(5))
+        assert(splash:wait(2))
         for _ = 1, num_scrolls do
             local height = get_body_height()
             for i = 1, 10 do
@@ -29,7 +37,7 @@ class ProductsSpider(scrapy.Spider):
                 splash:wait(scroll_delay/10)
             end
         end  
-        assert(splash:wait(5))
+        assert(splash:wait(2))
 
         return {
             cookies = splash:get_cookies(),
