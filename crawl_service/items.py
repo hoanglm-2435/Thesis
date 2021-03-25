@@ -17,6 +17,7 @@ class OfficalShopItem(scrapy.Item):
 
 
 class ProductItem(scrapy.Item):
+    shop_id = scrapy.Field()
     name = scrapy.Field()
     price = scrapy.Field()
     stock = scrapy.Field()

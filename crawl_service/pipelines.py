@@ -24,11 +24,12 @@ class CrawlServicePipeline(object):
         )
         self.cursor = self.conn.cursor()
         self.create_table()
-        
+
     def create_table(self):
         # self.cursor.execute("""DROP TABLE IF EXISTS products""")
         self.cursor.execute("""create table if not exists products(
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        shop_id INT NOT NULL,
                         name VARCHAR(512),
                         price VARCHAR(512),
                         stock VARCHAR(512),
@@ -38,7 +39,7 @@ class CrawlServicePipeline(object):
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                         )""")
-        
+
         # self.cursor.execute("""DROP TABLE IF EXISTS shopee_mall""")
         self.cursor.execute("""create table if not exists shopee_mall(
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -51,18 +52,10 @@ class CrawlServicePipeline(object):
 
     def process_item(self, item, spider):
         try:
-            if spider.name == 'offical_shop':
-                self.cursor.execute("""INSERT INTO shops (name, url, product_count, rate_average, follower) VALUES (%s, %s, %s, %s, %s)""", (
-                    item['name'],
-                    item['url'],
-                    item['product_count'],
-                    item['rate_average'],
-                    item['follower'],
-                ))
-                self.conn.commit()
-            elif spider.name == 'products':
+            if spider.name == 'products':
                 # self.cursor.execute("""alter table products ADD UNIQUE INDEX(id, name)""")
-                self.cursor.execute("""INSERT INTO products (name, price, stock, rating, reviews, sold) VALUES (%s, %s, %s, %s, %s, %s)""", (
+                self.cursor.execute("""INSERT INTO products (shop_id, name, price, stock, rating, reviews, sold) VALUES (%s, %s, %s, %s, %s, %s, %s)""", (
+                    item['shop_id'],
                     item['name'],
                     item['price'],
                     item['stock'],

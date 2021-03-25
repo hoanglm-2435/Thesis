@@ -5,17 +5,18 @@ from scrapy_splash import SplashRequest
 from crawl_service.items import ProductItem
 from crawl_service.queries.readdata import dataReader
 
+
 class ProductsSpider(scrapy.Spider):
     name = "products"
     allowed_domains = ["shopee.vn"]
-    
-    # start_urls = dataReader(spiderName='shopee_mall')
-    start_urls = [
-        "https://shopee.vn/shop/76334547/search?shopCollection=10993855",
-        "https://shopee.vn/depthailannam",
-        "https://shopee.vn/aokang_flagship_store",
-        "https://shopee.vn/bentonivietnam.official",
-    ]
+
+    start_urls = dataReader(spiderName='shopee_mall')
+    # start_urls = [
+    #     "https://shopee.vn/shop/76334547/search?shopCollection=10993855",
+    #     "https://shopee.vn/depthailannam",
+    #     "https://shopee.vn/aokang_flagship_store",
+    #     "https://shopee.vn/bentonivietnam.official",
+    # ]
 
     render_script = '''
     function main(splash)
@@ -80,7 +81,7 @@ class ProductsSpider(scrapy.Spider):
     '''
 
     def start_requests(self):
-        for url in self.start_urls:
+        for shop_id, url in self.start_urls.items():
             yield SplashRequest(
                 url,
                 endpoint="render.html",
@@ -88,6 +89,9 @@ class ProductsSpider(scrapy.Spider):
                 args={
                     'wait': 5,
                     'viewport': '2573x2573',
+                },
+                meta={
+                    'shop_id': shop_id,
                 },
                 dont_filter=True
             )
@@ -105,13 +109,16 @@ class ProductsSpider(scrapy.Spider):
                     "lua_source": self.render_script,
                     'viewport': '2573x2573',
                 },
+                meta={
+                    'shop_id': response.meta.get('shop_id'),
+                },
                 dont_filter=True,
             )
 
-        current_page = response.css(
-            'span.shopee-mini-page-controller__current ::text').extract_first()
-        total_page = response.css(
-            "span.shopee-mini-page-controller__total ::text").extract_first()
+        current_page = int(response.css(
+            'span.shopee-mini-page-controller__current ::text').extract_first())
+        total_page = int(response.css(
+            "span.shopee-mini-page-controller__total ::text").extract_first())
         if current_page < total_page:
             yield SplashRequest(
                 url=response.url,
@@ -125,13 +132,16 @@ class ProductsSpider(scrapy.Spider):
                             "lua_source": self.pagination_script,
                             'viewport': '2573x2573',
                         },
-                    }
+                    },
+                    'shop_id': response.meta.get('shop_id'),
                 },
                 dont_filter=True
             )
 
     def parse_product(self, response):
         item = ProductItem()
+
+        item["shop_id"] = response.meta.get('shop_id')
 
         item["name"] = response.css(
             "div.attM6y > span ::text").extract_first()
@@ -143,8 +153,8 @@ class ProductsSpider(scrapy.Spider):
         item["rating"] = float(response.css(
             "div.OitLRu._1mYa1t ::text").extract_first() or 0)
 
-        item["reviews"] = int(response.css(
-            "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first() or 0)
+        item["reviews"] = response.css(
+            "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first() or 0
 
         item["stock"] = int(response.xpath(
             "//label[text()='Kho hàng']/following::div[1]/text()").extract_first())
