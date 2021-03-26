@@ -31,11 +31,11 @@ class CrawlServicePipeline(object):
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         shop_id INT NOT NULL,
                         name VARCHAR(512),
-                        price VARCHAR(512),
-                        stock VARCHAR(512),
-                        sold VARCHAR(512),
-                        rating VARCHAR(512),
-                        reviews VARCHAR(512),
+                        price BIGINT,
+                        stock INT,
+                        sold INT,
+                        rating DOUBLE,
+                        reviews INT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                         )""")

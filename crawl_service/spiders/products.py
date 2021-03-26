@@ -146,20 +146,35 @@ class ProductsSpider(scrapy.Spider):
         item["name"] = response.css(
             "div.attM6y > span ::text").extract_first()
 
-        price = response.css(
+        priceRange = response.css(
             "div._3e_UQT ::text").extract_first()
-        item["price"] = price
+        priceRange = priceRange.split()
+        if len(priceRange) == 3:
+            item["price"] = int((int(priceRange[0].lstrip("₫").replace(
+                '.', '')) + int(priceRange[2].lstrip("₫").replace('.', '')))/2)
+        else:
+            item["price"] = int(priceRange[0].lstrip("₫").replace('.', ''))
 
         item["rating"] = float(response.css(
             "div.OitLRu._1mYa1t ::text").extract_first() or 0)
 
-        item["reviews"] = response.css(
+        reviews = response.css(
             "div.flex._21hHOx > div:nth-child(2) > div.OitLRu ::text").extract_first() or 0
+        if reviews != 0 and reviews[-1] == "k":
+            item['reviews'] = int(
+                float(reviews.replace('k', '').replace(',', '.'))*1000)
+        else:
+            item['reviews'] = int(reviews)
 
         item["stock"] = int(response.xpath(
-            "//label[text()='Kho hàng']/following::div[1]/text()").extract_first())
+            "//label[text()='Kho hàng']/following::div[1]/text()").extract_first() or 0)
 
-        item["sold"] = response.css(
-            "div.aca9MM ::text").extract_first()
+        sold = response.css(
+            "div.aca9MM ::text").extract_first() or 0
+        if sold != 0 and sold[-1] == 'k':
+            item['sold'] = int(
+                float(sold.replace('k', '').replace(',', '.'))*1000)
+        else:
+            item['sold'] = int(sold)
 
         yield item
