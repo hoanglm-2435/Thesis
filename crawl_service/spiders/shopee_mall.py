@@ -10,7 +10,6 @@ class ShopeeMallSpider(scrapy.Spider):
 
     start_urls = [
         "https://shopee.vn/mall/brands/2429",
-        "https://shopee.vn/mall/brands/161",
     ]
 
     script = """
