@@ -30,6 +30,7 @@ class CrawlServicePipeline(object):
         self.cursor.execute("""create table if not exists products(
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         shop_id INT NOT NULL,
+                        url VARCHAR(512),
                         name VARCHAR(512),
                         price BIGINT,
                         stock INT,
@@ -50,12 +51,23 @@ class CrawlServicePipeline(object):
                         UNIQUE KEY(name, url)
                         )""")
 
+        self.cursor.execute("""DROP TABLE IF EXISTS comments""")
+        self.cursor.execute("""create table if not exists comments(
+                        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        product_id INT NOT NULL,
+                        author VARCHAR(512),
+                        rating INT,
+                        content TEXT,
+                        time TIMESTAMP
+                        )""")
+
     def process_item(self, item, spider):
         try:
             if spider.name == 'products':
                 # self.cursor.execute("""alter table products ADD UNIQUE INDEX(id, name)""")
-                self.cursor.execute("""INSERT INTO products (shop_id, name, price, stock, rating, reviews, sold) VALUES (%s, %s, %s, %s, %s, %s, %s)""", (
+                self.cursor.execute("""INSERT INTO products (shop_id, url, name, price, stock, rating, reviews, sold) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", (
                     item['shop_id'],
+                    item['url'],
                     item['name'],
                     item['price'],
                     item['stock'],
@@ -64,11 +76,22 @@ class CrawlServicePipeline(object):
                     item['sold'],
                 ))
                 self.conn.commit()
+
             elif spider.name == 'shopee_mall':
                 # self.cursor.execute("""alter table shopee_mall ADD UNIQUE INDEX(name, url)""")
                 self.cursor.execute("""INSERT INTO shopee_mall (name, url) VALUES (%s, %s)""", (
                     item['name'],
                     item['url'],
+                ))
+                self.conn.commit()
+
+            elif spider.name == 'comments':
+                self.cursor.execute("""INSERT INTO comments (product_id, author, rating, content, time) VALUES (%s, %s, %s, %s, %s)""", (
+                    item['product_id'],
+                    item['author'],
+                    item['rating'],
+                    item['content'],
+                    item['time'],
                 ))
                 self.conn.commit()
 

@@ -143,6 +143,8 @@ class ProductsSpider(scrapy.Spider):
 
         item["shop_id"] = response.meta.get('shop_id')
 
+        item['url'] = response.url
+
         item["name"] = response.css(
             "div.attM6y > span ::text").extract_first()
 
