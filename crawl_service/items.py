@@ -18,6 +18,7 @@ class OfficalShopItem(scrapy.Item):
 
 class ProductItem(scrapy.Item):
     shop_id = scrapy.Field()
+    url = scrapy.Field()
     name = scrapy.Field()
     price = scrapy.Field()
     stock = scrapy.Field()
@@ -29,3 +30,11 @@ class ProductItem(scrapy.Item):
 class ShopeeMallItem(scrapy.Item):
     name = scrapy.Field()
     url = scrapy.Field()
+
+class CommentItem(scrapy.Item):
+    product_id = scrapy.Field()
+    author = scrapy.Field()
+    rating = scrapy.Field()
+    content = scrapy.Field()
+    time = scrapy.Field()
+    
