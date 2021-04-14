@@ -18,7 +18,7 @@ class CrawlServicePipeline(object):
             'localhost',
             'root',
             'hoangminh99',
-            'shopee_crawler',
+            'crawler_test',
             charset="utf8",
             use_unicode=True,
         )
@@ -51,16 +51,6 @@ class CrawlServicePipeline(object):
                         UNIQUE KEY(name, url)
                         )""")
 
-        self.cursor.execute("""DROP TABLE IF EXISTS comments""")
-        self.cursor.execute("""create table if not exists comments(
-                        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                        product_id INT NOT NULL,
-                        author VARCHAR(512),
-                        rating INT,
-                        content TEXT,
-                        time TIMESTAMP
-                        )""")
-
     def process_item(self, item, spider):
         try:
             if spider.name == 'products':
@@ -82,16 +72,6 @@ class CrawlServicePipeline(object):
                 self.cursor.execute("""INSERT INTO shopee_mall (name, url) VALUES (%s, %s)""", (
                     item['name'],
                     item['url'],
-                ))
-                self.conn.commit()
-
-            elif spider.name == 'comments':
-                self.cursor.execute("""INSERT INTO comments (product_id, author, rating, content, time) VALUES (%s, %s, %s, %s, %s)""", (
-                    item['product_id'],
-                    item['author'],
-                    item['rating'],
-                    item['content'],
-                    item['time'],
                 ))
                 self.conn.commit()
 
