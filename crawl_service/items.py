@@ -7,15 +7,6 @@
 
 import scrapy
 
-
-class OfficalShopItem(scrapy.Item):
-    name = scrapy.Field()
-    url = scrapy.Field()
-    product_count = scrapy.Field()
-    rate_average = scrapy.Field()
-    follower = scrapy.Field()
-
-
 class ProductItem(scrapy.Item):
     shop_id = scrapy.Field()
     url = scrapy.Field()
@@ -38,3 +29,8 @@ class CommentItem(scrapy.Item):
     content = scrapy.Field()
     time = scrapy.Field()
     
+class ShopOfflineItem(scrapy.Item):
+    name = scrapy.Field()
+    rating = scrapy.Field()
+    location = scrapy.Field()
+    phone_number = scrapy.Field()

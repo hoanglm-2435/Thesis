@@ -51,6 +51,18 @@ class CrawlServicePipeline(object):
                         UNIQUE KEY(name, url)
                         )""")
 
+        # self.cursor.execute("""DROP TABLE IF EXISTS shop_offline""")
+        self.cursor.execute("""create table if not exists shop_offline(
+                        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(512),
+                        rating DOUBLE,
+                        location VARCHAR(512),
+                        phone_number VARCHAR(512),
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        UNIQUE KEY(name, location)
+                        )""")
+
     def process_item(self, item, spider):
         try:
             if spider.name == 'products':
@@ -72,6 +84,15 @@ class CrawlServicePipeline(object):
                 self.cursor.execute("""INSERT INTO shopee_mall (name, url) VALUES (%s, %s)""", (
                     item['name'],
                     item['url'],
+                ))
+                self.conn.commit()
+
+            elif spider.name == 'shop_offline':
+                self.cursor.execute("""INSERT INTO shop_offline (name, rating, location, phone_number) VALUES (%s, %s, %s, %s)""", (
+                    item['name'],
+                    item['rating'],
+                    item['location'],
+                    item['phone_number'],
                 ))
                 self.conn.commit()
 
