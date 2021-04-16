@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import MySQLdb
+from datetime import datetime, timedelta
 from scrapy_splash import SplashRequest
 from crawl_service.items import ProductItem
 from crawl_service.queries.readdata import dataReader
@@ -31,7 +32,7 @@ class ProductsSpider(scrapy.Spider):
                 scroll_to(0, height * i/10)
                 splash:wait(scroll_delay/10)
             end
-        end  
+        end
         assert(splash:wait(2))
 
         return {
@@ -63,9 +64,9 @@ class ProductsSpider(scrapy.Spider):
                 scroll_to(0, height * i/10)
                 splash:wait(scroll_delay/10)
             end
-        end  
+        end
         assert(splash:wait(2))
-        
+
         return {
             cookies = splash:get_cookies(),
             html = splash:html(),
@@ -133,7 +134,7 @@ class ProductsSpider(scrapy.Spider):
             )
 
     def parse_product(self, response):
-        start_time = self.crawler.stats.get_value('start_time')
+        start_time = self.crawler.stats.get_value('start_time') + timedelta(hours=7)
 
         item = ProductItem()
 
@@ -174,7 +175,7 @@ class ProductsSpider(scrapy.Spider):
                 float(sold.replace('k', '').replace(',', '.'))*1000)
         else:
             item['sold'] = int(sold)
-            
+
         item['created_at'] = start_time.strftime("%Y-%m-%d %H:%M:%S")
 
         yield item

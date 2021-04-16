@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\ShopeeMall;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class Analysis extends Controller
@@ -20,8 +21,8 @@ class Analysis extends Controller
             $sold = 0;
             $revenue = 0;
             foreach ($report as $item) {
-                $sold += $item[0]->soldPerMonth;
-                $revenue += $item[0]->revenuePerMonth;
+                $sold += $item->soldPerMonth;
+                $revenue += $item->revenuePerMonth;
             }
             $shopAnalysis[] = [
                 'shop_id' => $shop->id,
@@ -41,10 +42,10 @@ class Analysis extends Controller
         $report = $this->getReport($products);
 
         foreach($report as $product) {
-            $shopId = $product[0]->shop;
+            $shopId = $product->shop;
 
             if ($shopId) {
-                $product[0]->shop = [
+                $product->shop = [
                     'name' => ShopeeMall::find($shopId)->name,
                     'url' => ShopeeMall::find($shopId)->url
                 ];
@@ -58,6 +59,7 @@ class Analysis extends Controller
     {
         $comments = Comment::where('product_id', $productId)
             ->get();
+        $comment = [];
 
         foreach ($comments as $item) {
             $comment[] = [
@@ -75,7 +77,9 @@ class Analysis extends Controller
 
     public function getReport($products)
     {
-        foreach ($products as $key => $product) {
+        $report = [];
+
+        foreach ($products as $product) {
             $report[] = DB::select(DB::raw(
                 "SELECT report.id, report.name, report.url, report.shop, report.price, report.rating, report.reviews, SUM(report.soldPerDay) as soldPerMonth, SUM(report.revenuePerDay) as revenuePerMonth FROM
                 (Select p1.id, p1.name, p1.url, p1.shop_id as shop, p2.price, p1.rating, p1.reviews, (p1.stock - p2.stock) as soldPerDay, (p1.stock - p2.stock)*p1.price as revenuePerDay FROM crawler_test.products as p1
@@ -87,6 +91,6 @@ class Analysis extends Controller
 
         $report = array_unique($report, SORT_REGULAR);
 
-        return $report;
+        return Arr::flatten($report);
     }
 }

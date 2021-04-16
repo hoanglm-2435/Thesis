@@ -13,7 +13,7 @@ conn = MySQLdb.connect(
             'localhost',
             'root',
             'hoangminh99',
-            'shopee_crawler',
+            'crawler_test',
             charset="utf8mb4",
             use_unicode=True,
         )
@@ -51,7 +51,7 @@ for url in start_urls:
         params = {'offset': offset, 'itemid': itemid, 'shopid': shopid}
         url = "https://shopee.vn/api/v2/item/get_ratings?filter=0&flag=1&limit=6&type=0"
         response = requests.get(
-                url, 
+                url,
                 params,
                 timeout=5,
                 verify=False,
@@ -70,14 +70,14 @@ for url in start_urls:
                 content = comment.get('comment')
                 if content != '' and content is not None:
                     item = defaultdict()
-            
+
                     item['product_id'] = product_id
                     item['author'] = comment.get('author_username')
                     item['rating'] = comment.get('rating_star')
                     time_comment = comment.get('mtime')
                     item['time'] = strftime("%Y-%m-%d %H:%M:%S", localtime(time_comment))
                     item['content'] = content
-                    
+
                     try:
                         cursor.execute("""INSERT INTO comments (product_id, author, rating, content, time) VALUES (%s, %s, %s, %s, %s)""", (
                                 item['product_id'],
@@ -95,5 +95,5 @@ for url in start_urls:
             offset += 6
             sleep(5)
             print("Count: ", offset)
-        else: 
+        else:
             break
