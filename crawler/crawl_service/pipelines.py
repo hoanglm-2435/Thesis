@@ -18,7 +18,7 @@ class CrawlServicePipeline(object):
             'localhost',
             'root',
             'hoangminh99',
-            'shopee_crawler',
+            'crawler_test',
             charset="utf8",
             use_unicode=True,
         )
@@ -26,7 +26,7 @@ class CrawlServicePipeline(object):
         self.create_table()
 
     def create_table(self):
-        # self.cursor.execute("""DROP TABLE IF EXISTS products""")
+#         self.cursor.execute("""DROP TABLE IF EXISTS products""")
         self.cursor.execute("""create table if not exists products(
                         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                         shop_id INT NOT NULL,

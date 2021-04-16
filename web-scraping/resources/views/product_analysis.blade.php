@@ -8,10 +8,12 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="text-black">
-                            Shopee Analysis -
-                            <a href="{{ $report[0][0]->shop['url'] }}">
-                                {{ $report[0][0]->shop['name'] }}
-                            </a>
+                            Shopee Analysis
+                            @if($report && $report[0]->shop)
+                                <a href="{{ $report[0]->shop['url'] }}">
+                                    - {{ $report[0]->shop['name'] }}
+                                </a>
+                            @endif
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -61,23 +63,23 @@
                                     <tbody>
                                     @if($report)
                                         @foreach ($report as $key => $product)
-                                            @if(!is_null($product[0]->id))
+                                            @if(!is_null($product->id))
                                                 <tr>
                                                     <td class="text-center">{{ $key += 1 }}</td>
                                                     <td>
-                                                        <a href="{{ $product[0]->url }}">
-                                                            {{ $product[0]->name }}
+                                                        <a href="{{ $product->url }}">
+                                                            {{ $product->name }}
                                                         </a>
                                                     </td>
-                                                    <td class="text-center">{{ $product[0]->price }}</td>
-                                                    <td class="text-center">{{ $product[0]->soldPerMonth }}</td>
-                                                    <td class="text-center">{{ $product[0]->revenuePerMonth }}</td>
-                                                    <td class="text-center">{{ $product[0]->rating }}</td>
+                                                    <td class="text-center">{{ $product->price }}</td>
+                                                    <td class="text-center">{{ $product->soldPerMonth }}</td>
+                                                    <td class="text-center">{{ $product->revenuePerMonth }}</td>
+                                                    <td class="text-center">{{ $product->rating }}</td>
                                                     <td class="text-center">
-                                                        {{ $product[0]->reviews }}
+                                                        {{ $product->reviews }}
                                                         <button title="Quick View" data-toggle="modal"
                                                                 class="btn btn-sm btn-default list-comments"
-                                                                data-id="{{ $product[0]->id }}"
+                                                                data-id="{{ $product->id }}"
                                                                 data-target="#commentModal" href="#">
                                                             <i class="far fa-eye"></i>
                                                         </button>
