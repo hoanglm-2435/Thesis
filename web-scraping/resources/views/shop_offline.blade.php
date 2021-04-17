@@ -41,15 +41,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($shops as $key => $shop)
-                                        <tr>
-                                            <td class="text-center">{{ $key }}</td>
-                                            <td>{{ $shop->name }}</td>
-                                            <td>{{ $shop->rating }}</td>
-                                            <td class="text-center">{{ $shop->phone_number }}</td>
-                                            <td class="text-center">{{ $shop->location }}</td>
-                                        </tr>
-                                    @endforeach
                                     </tbody>
                                     <tfoot>
                                     <tr class="text-center">
@@ -71,17 +62,5 @@
 @endsection
 
 @section('script')
-    <script>
-        $(function () {
-            $("#data-table").DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+    <script src="{{ mix('js/shop-offline.js') }}"></script>
 @endsection

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.list-comments').on('click', function (e) {
+    $(document).on('click', '#list-comments' ,function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
         $.ajaxSetup({
@@ -8,7 +8,7 @@ $(document).ready(function() {
             }
         });
         $.ajax({
-            url: '/show-comments/' + id,
+            url: route('product.comments', id),
             type: 'get',
             dataType: 'json',
             success: function (response) {

@@ -19,10 +19,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/shopee-analysis', [Analysis::class, 'getShop'])->name('shopee');
+Route::group([
+    'prefix' => 'shopee-analysis',
+    'namespace' => 'ShopeeAnalysis',
+], function () {
+    Route::get('/', [Analysis::class, 'showShop'])->name('shopee');
 
-Route::get('/shopee-analysis/{id}', [Analysis::class, 'showProducts'])->name('products');
+    Route::get('/shops', [Analysis::class, 'getShop'])->name('shopee.shops');
 
-Route::get('/show-comments/{id}', [Analysis::class, 'showComments']);
+    Route::group([
+        'prefix' => 'shop',
+    ], function () {
+        Route::get('/{id}', [Analysis::class, 'showProducts'])->name('shopee.shop');
 
-Route::get('/shop-offline', [Get::class, 'get'])->name('shop-offline');
+        Route::get('/{id}/products', [Analysis::class, 'getProducts'])->name('shopee.products');
+
+        Route::post('/filter/{id}', [Analysis::class, 'filterPrice'])->name('filter.products');
+
+        Route::get('/comments/{id}', [Analysis::class, 'getComments'])->name('product.comments');
+    });
+});
+
+Route::group([
+    'prefix' => 'shop-offline',
+    'namespace' => 'ShopOffline',
+], function () {
+    Route::get('/', [Get::class, 'showShop'])->name('shop-offline');
+
+    Route::get('/shop', [Get::class, 'getShop'])->name('shop-offline.shop');
+});
