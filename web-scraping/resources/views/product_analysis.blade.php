@@ -9,11 +9,6 @@
                     <div class="col-sm-6">
                         <h1 class="text-black">
                             Shopee Analysis
-                            @if($report && $report[0]->shop)
-                                <a href="{{ $report[0]->shop['url'] }}">
-                                    - {{ $report[0]->shop['name'] }}
-                                </a>
-                            @endif
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -36,18 +31,18 @@
                             <div class="card-header">
                                 <h3 class="card-title">Market analysis on the Shopee e-commerce platform</h3>
                             </div>
+                            <div class="mx-4 my-2 flex flex-column">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="mr-2">Filter by:</h4>
+                                    <select class="mb-2 form-select" id="select-filter" name="filter">
+                                        <option value="price" selected>Price</option>
+                                        <option value="rating">Rating</option>
+                                    </select>
+                                </div>
+                                <input type="text" id="price-range" readonly>
+                            </div>
 
                             <div class="card-body">
-{{--                                <div class="mb-2 flex flex-column">--}}
-{{--                                    <div>--}}
-{{--                                        <span>Max rating: </span>--}}
-{{--                                        <input type="number" id="max" name="max">--}}
-{{--                                    </div>--}}
-{{--                                    <div class="mt-2">--}}
-{{--                                        <span>Min rating: </span>--}}
-{{--                                        <input type="number" id="min" name="min">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
                                 <table id="data-table" class="table table-bordered table-striped">
                                     <thead>
                                     <tr class="text-center">
@@ -61,41 +56,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($report)
-                                        @foreach ($report as $key => $product)
-                                            @if(!is_null($product->id))
-                                                <tr>
-                                                    <td class="text-center">{{ $key += 1 }}</td>
-                                                    <td>
-                                                        <a href="{{ $product->url }}">
-                                                            {{ $product->name }}
-                                                        </a>
-                                                    </td>
-                                                    <td class="text-center">{{ $product->price }}</td>
-                                                    <td class="text-center">{{ $product->soldPerMonth }}</td>
-                                                    <td class="text-center">{{ $product->revenuePerMonth }}</td>
-                                                    <td class="text-center">{{ $product->rating }}</td>
-                                                    <td class="text-center">
-                                                        {{ $product->reviews }}
-                                                        <button title="Quick View" data-toggle="modal"
-                                                                class="btn btn-sm btn-default list-comments"
-                                                                data-id="{{ $product->id }}"
-                                                                data-target="#commentModal" href="#">
-                                                            <i class="far fa-eye"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    @endif
                                     </tbody>
                                     <tfoot>
                                     <tr class="text-center">
                                         <th>ID</th>
                                         <th>Product Name</th>
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Sold</th>
+                                        <th>Price(VND)</th>
+                                        <th>Sold / Month</th>
+                                        <th>Revenue / Month</th>
                                         <th>Rating</th>
                                         <th>Reviews</th>
                                     </tr>
@@ -159,17 +127,5 @@
 
 @section('script')
     <script src="{{ mix('js/show-comments.js') }}"></script>
-    <script>
-        $(function () {
-            $("#data-table").DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+    <script src="{{ mix('js/product-analysis.js') }}"></script>
 @endsection

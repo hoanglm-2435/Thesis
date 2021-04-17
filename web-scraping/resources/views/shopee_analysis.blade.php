@@ -41,25 +41,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if($shopAnalysis)
-                                        @foreach ($shopAnalysis as $key => $shop)
-                                            <tr>
-                                                <td class="text-center">{{ $key += 1 }}</td>
-                                                <td>
-                                                    <a href="{{ route('products', $shop['shop_id']) }}">
-                                                        {{ $shop['name'] }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="{{ $shop['url'] }}">
-                                                        {{ $shop['url'] }}
-                                                    </a>
-                                                </td>
-                                                <td class="text-center">{{ $shop['sold'] }}</td>
-                                                <td class="text-center">{{ $shop['revenue'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
                                     </tbody>
                                     <tfoot>
                                     <tr class="text-center">
@@ -81,17 +62,5 @@
 @endsection
 
 @section('script')
-    <script>
-        $(function () {
-            $("#data-table").DataTable({
-                "paging": true,
-                "lengthChange": true,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+    <script src="{{ mix('js/shopee-analysis.js') }}"></script>
 @endsection

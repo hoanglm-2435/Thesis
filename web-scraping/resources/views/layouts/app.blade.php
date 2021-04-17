@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @routes()
+
     <title>Market Analysis</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo-app.png') }}">
 
@@ -18,6 +21,11 @@
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/dist/css/adminlte.min.css') }}">
+
+    <!-- Ion Slider -->
+    <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/ion-rangeslider/css/ion.rangeSlider.min.css') }}">
+    <!-- bootstrap slider -->
+    <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/bootstrap-slider/css/bootstrap-slider.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -162,6 +170,11 @@
 <script src="{{ asset('bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('bower_components/admin-lte/dist/js/demo.js') }}"></script>
+
+<!-- Ion Slider -->
+<script src="{{ asset('bower_components/admin-lte/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
+<!-- Bootstrap slider -->
+<script src="{{ asset('bower_components/admin-lte/plugins/bootstrap-slider/bootstrap-slider.min.js') }}"></script>
 
 @yield('script')
 </body>
