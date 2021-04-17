@@ -8,7 +8,8 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="text-black">
-                            Shopee Analysis
+                            Shopee Analysis -
+                            <a href="{{ $shop->url }}"> {{ $shop->name }}</a>
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -29,7 +30,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform</h3>
+                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt }}</b></h3>
                             </div>
                             <div class="mx-4 my-2 flex flex-column">
                                 <div class="d-flex align-items-center">
@@ -49,9 +50,10 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold / Month</th>
-                                        <th>Revenue / Month</th>
+                                        <th>Sold</th>
+                                        <th>Revenue(VND)</th>
                                         <th>Rating</th>
+                                        <th>Updated at</th>
                                         <th>Reviews</th>
                                     </tr>
                                     </thead>
@@ -62,9 +64,10 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold / Month</th>
-                                        <th>Revenue / Month</th>
+                                        <th>Sold</th>
+                                        <th>Revenue(VND)</th>
                                         <th>Rating</th>
+                                        <th>Updated at</th>
                                         <th>Reviews</th>
                                     </tr>
                                     </tfoot>

@@ -14,25 +14,18 @@ $(function () {
             url: route('shopee.shops'),
         },
         columns: [
-            { data: 'id', name: 'id' },
+            { data: 'id', name: 'id', className: 'text-center' },
             {
                 data: 'name',
                 name: 'name',
                 render: function (data, type, full) {
-                    const productUrl = route('shopee.shop', full.id);
-
-                    return `<a href="${productUrl}">${full.name}</a>`;
+                    return `<a href="${full.url}">${full.name}</a>`;
                 }
             },
-            {
-                data: 'url',
-                name: 'url',
-                render: function (data, type, full) {
-                    return `<a href="${full.url}">${full.url}</a>`;
-                }
-            },
-            { data: 'sold', name: 'sold' },
-            { data: 'revenue', name: 'revenue' },
+            { data: 'product_count', name: 'product_count', className: 'text-center' },
+            { data: 'sold', name: 'sold', className: 'text-center' },
+            { data: 'revenue', name: 'revenue', className: 'text-center' },
+            { data: 'action', name: 'action', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

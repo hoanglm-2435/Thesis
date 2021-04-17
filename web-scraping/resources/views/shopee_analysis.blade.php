@@ -35,9 +35,10 @@
                                     <tr class="text-center">
                                         <th>ID</th>
                                         <th>Shop Name</th>
-                                        <th>Shop URL</th>
+                                        <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -46,9 +47,10 @@
                                     <tr class="text-center">
                                         <th>ID</th>
                                         <th>Shop Name</th>
-                                        <th>Shop URL</th>
+                                        <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
+                                        <th>Action</th>
                                     </tr>
                                     </tfoot>
                                 </table>

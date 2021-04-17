@@ -17,30 +17,19 @@ $(document).ready(function() {
             url: route('shopee.products', shopId),
         },
         columns: [
-            { data: 'id' },
+            { data: 'id', className: 'text-center' },
             {
                 data: 'name',
                 render: function (data, type, full) {
                     return `<a href="${full.url}">${full.name}</a>`;
                 }
             },
-            { data: 'price'},
-            { data: 'soldPerMonth' },
-            { data: 'revenuePerMonth' },
-            { data: 'rating' },
-            {
-                data: 'reviews',
-                render: function (data, type, full) {
-                    return `${data}
-                        <button title="Quick View" data-toggle="modal"
-                                id="list-comments"
-                                class="ml-2 btn btn-sm btn-default"
-                                data-id="${full.id}"
-                                data-target="#commentModal" href="#">
-                            <i class="far fa-eye"></i>
-                        </button>`;
-                }
-            },
+            { data: 'price', className: 'text-center' },
+            { data: 'soldPerMonth', className: 'text-center' },
+            { data: 'revenuePerMonth', className: 'text-center' },
+            { data: 'rating', className: 'text-center' },
+            { data: 'updated_at', className: 'text-center' },
+            { data: 'reviews', className: 'text-center' },
         ]
     });
 
@@ -129,32 +118,19 @@ $(document).ready(function() {
                 },
             },
             columns: [
-                { data: 'id' },
+                { data: 'id', className: 'text-center' },
                 {
                     data: 'name',
                     render: function (data, type, full) {
                         return `<a href="${full.url}">${full.name}</a>`;
                     }
                 },
-                { data: 'price'},
-                { data: 'soldPerMonth' },
-                { data: 'revenuePerMonth' },
-                { data: 'rating' },
-                {
-                    data: 'reviews',
-                    render: function (data, type, full) {
-                        return `
-                            `+data+`
-                            <button title="Quick View" data-toggle="modal"
-                                    id="list-comments"
-                                    class="ml-2 btn btn-sm btn-default"
-                                    data-id="${full.id}"
-                                    data-target="#commentModal" href="#">
-                                <i class="far fa-eye"></i>
-                            </button>
-                            `;
-                    }
-                },
+                { data: 'price', className: 'text-center' },
+                { data: 'soldPerMonth', className: 'text-center' },
+                { data: 'revenuePerMonth', className: 'text-center' },
+                { data: 'rating', className: 'text-center' },
+                { data: 'updated_at', className: 'text-center' },
+                { data: 'reviews', className: 'text-center' },
             ]
         });
     }
