@@ -12,6 +12,9 @@ $(document).ready(function() {
         responsive: true,
         buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
         processing: true,
+        language: {
+            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+        },
         serverSide: true,
         ajax: {
             url: route('shopee.products', shopId),
@@ -33,7 +36,7 @@ $(document).ready(function() {
         ]
     });
 
-    let $range = $("#price-range");
+    let $range = $("#filter-range");
 
     $range.ionRangeSlider({
         min: 0,
@@ -107,6 +110,9 @@ $(document).ready(function() {
             responsive: true,
             buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
             processing: true,
+            language: {
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+            },
             serverSide: true,
             ajax: {
                 url: route('filter.products', shopId),

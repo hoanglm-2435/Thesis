@@ -44,7 +44,7 @@ class Analysis extends Controller
         }
 
         return DataTables::of(collect($shopAnalysis))
-            ->addColumn('action', function ($value) {
+            ->addColumn('products', function ($value) {
                 $url = route('shopee.shop', $value['id']);
 
                 return '
@@ -57,7 +57,7 @@ class Analysis extends Controller
                     </a>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['products'])
             ->make(true);
     }
 
@@ -133,14 +133,13 @@ class Analysis extends Controller
         $report = [];
 
         foreach ($products as $product) {
-            $report[] = DB::select(DB::raw(
-                'SELECT report.id, report.name, report.url, report.shop, report.price, report.rating, report.created_at, SUM(report.soldPerDay) as soldPerMonth, SUM(report.revenuePerDay) as revenuePerMonth FROM
+            $report[] = DB::select("SELECT report.id, report.name, report.url, report.shop, report.price, report.rating, report.created_at, SUM(report.soldPerDay) as soldPerMonth, SUM(report.revenuePerDay) as revenuePerMonth FROM
                 (Select p1.id, p2.name, p2.url, p2.shop_id as shop, p2.price, p2.rating, p2.created_at, (p2.sold - p1.sold) as soldPerDay, (p2.sold - p1.sold)*p1.price as revenuePerDay FROM products as p1
                 join products as p2
                 on datediff(p2.created_at, p1.created_at) = 1
-                where p1.url = "$product->url" and p2.url = "$product->url"
-                order by id desc limit 1) as report'
-            ));
+                where p1.url = '$product->url' and p2.url = '$product->url'
+                order by id desc limit 1) as report",
+            );
         }
 
         $report = array_unique($report, SORT_REGULAR);
@@ -148,7 +147,7 @@ class Analysis extends Controller
         return Arr::flatten($report);
     }
 
-    public function filterPrice(Request $request, $shopId)
+    public function filter(Request $request, $shopId)
     {
         $products = Product::where('shop_id', $shopId)->get();
         $report = $this->getReport($products);

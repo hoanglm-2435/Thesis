@@ -9,6 +9,9 @@ $(function () {
         responsive: true,
         buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
         processing: true,
+        language: {
+            processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>',
+        },
         serverSide: true,
         ajax: {
             url: route('shop-offline.shop'),

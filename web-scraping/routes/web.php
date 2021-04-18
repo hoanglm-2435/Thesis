@@ -34,7 +34,7 @@ Route::group([
 
         Route::get('/{id}/products', [Analysis::class, 'getProducts'])->name('shopee.products');
 
-        Route::post('/filter/{id}', [Analysis::class, 'filterPrice'])->name('filter.products');
+        Route::post('/filter/{id}', [Analysis::class, 'filter'])->name('filter.products');
 
         Route::get('/comments/{id}', [Analysis::class, 'getComments'])->name('product.comments');
     });

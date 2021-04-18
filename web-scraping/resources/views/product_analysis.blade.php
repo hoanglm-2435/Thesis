@@ -40,7 +40,7 @@
                                         <option value="rating">Rating</option>
                                     </select>
                                 </div>
-                                <input type="text" id="price-range" readonly>
+                                <input type="text" id="filter-range" readonly>
                             </div>
 
                             <div class="card-body">
@@ -53,7 +53,7 @@
                                         <th>Sold</th>
                                         <th>Revenue(VND)</th>
                                         <th>Rating</th>
-                                        <th>Updated at</th>
+                                        <th>Updated At</th>
                                         <th>Reviews</th>
                                     </tr>
                                     </thead>
@@ -67,7 +67,7 @@
                                         <th>Sold</th>
                                         <th>Revenue(VND)</th>
                                         <th>Rating</th>
-                                        <th>Updated at</th>
+                                        <th>Updated At</th>
                                         <th>Reviews</th>
                                     </tr>
                                     </tfoot>

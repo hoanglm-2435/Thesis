@@ -38,7 +38,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
-                                        <th>Action</th>
+                                        <th>Products</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -50,7 +50,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
-                                        <th>Action</th>
+                                        <th>Products</th>
                                     </tr>
                                     </tfoot>
                                 </table>
