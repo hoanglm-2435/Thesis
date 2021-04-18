@@ -28,7 +28,7 @@ class CommentItem(scrapy.Item):
     rating = scrapy.Field()
     content = scrapy.Field()
     time = scrapy.Field()
-    
+
 class ShopOfflineItem(scrapy.Item):
     name = scrapy.Field()
     rating = scrapy.Field()

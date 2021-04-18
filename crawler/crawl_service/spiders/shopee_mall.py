@@ -9,7 +9,7 @@ class ShopeeMallSpider(scrapy.Spider):
     allowed_domains = ["shopee.vn"]
 
     start_urls = [
-        "https://shopee.vn/mall/brands/2429",
+        "https://shopee.vn/mall/brands/13030",
     ]
 
     script = """

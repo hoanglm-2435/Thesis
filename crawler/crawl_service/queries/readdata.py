@@ -8,7 +8,7 @@ def dataReader(spiderName):
             'localhost',
             'root',
             'hoangminh99',
-            'crawler_test',
+            'thesis_db',
             charset="utf8",
             use_unicode=True,
         )

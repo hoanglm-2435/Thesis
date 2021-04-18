@@ -7,13 +7,16 @@ class ShopOfflineSpider(scrapy.Spider):
     name = "shop_offline"
     allowed_domains = ["google.com"]
 
-    start_urls = ["https://www.google.com/search?q=shop+sneaker+h%C3%A0+n%E1%BB%99i&gbv=2&biw=580&bih=667&tbm=lcl&sxsrf=ALeKk03riuE9SHOflf3ictArwvZedmBfGg%3A1618407941145&ei=BfJ2YI-zCInv-QaT1p_4BQ&oq=shop+sneaker+h%C3%A0+n%E1%BB%99i&gs_l=psy-ab.3...0.0.0.394459.0.0.0.0.0.0.0.0..0.0....0...1c..64.psy-ab..0.0.0....0.bIgkdAEaivQ#rlfi=hd:;si:;mv:[[21.0347708,105.866964],[20.9973767,105.79632199999999]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!1m4!1u2!2m2!2m1!1e1!2m1!1e2!2m1!1e3!3sIAE,lf:1,lf_ui:10"]
+    start_urls = [
+        "https://www.google.com/search?q=shop+sneaker+h%C3%A0+n%E1%BB%99i&gbv=2&biw=580&bih=667&tbm=lcl&sxsrf=ALeKk03riuE9SHOflf3ictArwvZedmBfGg%3A1618407941145&ei=BfJ2YI-zCInv-QaT1p_4BQ&oq=shop+sneaker+h%C3%A0+n%E1%BB%99i&gs_l=psy-ab.3...0.0.0.394459.0.0.0.0.0.0.0.0..0.0....0...1c..64.psy-ab..0.0.0....0.bIgkdAEaivQ#rlfi=hd:;si:;mv:[[21.0347708,105.866964],[20.9973767,105.79632199999999]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!1m4!1u2!2m2!2m1!1e1!2m1!1e2!2m1!1e3!3sIAE,lf:1,lf_ui:10",
+#         "https://www.google.com/search?q=shop+sneaker+h%E1%BB%93+ch%C3%AD+minh&gbv=2&biw=1355&bih=438&tbm=lcl&sxsrf=ALeKk01657Lp4XT2BeWxCVODr5OVfUVzTw%3A1618758531578&ei=g0t8YLzuItiVr7wPyOKQkAs&oq=shop+sneaker+h%E1%BB%93+ch%C3%AD+minh&gs_l=psy-ab.3..0i22i30k1.3004.5379.0.6007.14.14.0.0.0.0.173.1381.9j5.14.0....0...1c.1j4.64.psy-ab..0.14.1375...0j35i39k1j33i22i29i30k1.0.g8r-NH8Iqwc#rlfi=hd:;si:;mv:[[10.8405993,106.71721149999999],[10.7593306,106.6466444]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!1m4!1u2!2m2!2m1!1e1!2m1!1e2!2m1!1e3!3sIAE,lf:1,lf_ui:10",
+    ]
 
     script = '''
     function main(splash)
         assert(splash:go(splash.args.url))
         assert(splash:wait(5))
-        
+
         return {
             html = splash:html(),
             url = splash:url(),
@@ -46,7 +49,7 @@ class ShopOfflineSpider(scrapy.Spider):
             rating = data.css(
                 "span.BTtC6e ::text").extract_first() or '0'
             item['rating'] = float(rating.replace(',', '.'))
-            
+
             info = data.css(
                 "div.uMdZh.tIxNaf.mnr-c > div > a > div > span > div:nth-child(2) ::text").extract_first()
             sliceInfo = info.find('·')

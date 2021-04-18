@@ -14,10 +14,10 @@ $(function () {
             url: route('shop-offline.shop'),
         },
         columns: [
-            { data: 'id', name: 'id' },
+            { data: 'id', name: 'id', className: 'text-center' },
             { data: 'name', name: 'name' },
-            { data: 'rating', name: 'rating' },
-            { data: 'phone_number', name: 'phone_number' },
+            { data: 'rating', name: 'rating', className: 'text-center' },
+            { data: 'phone_number', name: 'phone_number', className: 'text-center' },
             { data: 'location', name: 'location' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
