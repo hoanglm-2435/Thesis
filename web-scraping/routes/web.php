@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ShopeeAnalysis\Analysis;
-use App\Http\Controllers\ShopOffline\Get;
+use App\Http\Controllers\ShopOffline\GoogleMaps;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,7 +44,9 @@ Route::group([
     'prefix' => 'shop-offline',
     'namespace' => 'ShopOffline',
 ], function () {
-    Route::get('/', [Get::class, 'showShop'])->name('shop-offline');
+    Route::get('/', [GoogleMaps::class, 'showShop'])->name('shop-offline');
 
-    Route::get('/shop', [Get::class, 'getShop'])->name('shop-offline.shop');
+    Route::get('/shop', [GoogleMaps::class, 'getShop'])->name('shop-offline.shop');
+
+    Route::post('/shop/filter', [GoogleMaps::class, 'filter'])->name('shop-offline.filter');
 });

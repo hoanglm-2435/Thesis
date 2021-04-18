@@ -29,6 +29,13 @@
                                 <h3 class="card-title">Shop locations on google map</h3>
                             </div>
 
+                            <div class="mx-4 my-2 flex flex-column">
+                                <div class="align-items-center">
+                                    <h4 class="mr-2">Filter by rating:</h4>
+                                    <input type="text" id="rating-range" readonly>
+                                </div>
+                            </div>
+
                             <div class="card-body">
                                 <table id="data-table" class="table table-bordered table-striped">
                                     <thead>
