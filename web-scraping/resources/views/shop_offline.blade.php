@@ -43,8 +43,11 @@
                                         <th>ID</th>
                                         <th>Shop Name</th>
                                         <th>Rating</th>
+                                        <th>User Rating</th>
+                                        <th>City</th>
+                                        <th>Address</th>
                                         <th>Phone Number</th>
-                                        <th>Location</th>
+                                        <th>Reviews</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -54,8 +57,11 @@
                                         <th>ID</th>
                                         <th>Shop Name</th>
                                         <th>Rating</th>
+                                        <th>User Rating</th>
+                                        <th>City</th>
+                                        <th>Address</th>
                                         <th>Phone Number</th>
-                                        <th>Location</th>
+                                        <th>Reviews</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -66,8 +72,56 @@
             </div>
         </section>
     </div>
+    <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="width: 130%">
+                <div class="modal-header">
+                    <h2>List Reviews Of Place</h2>
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="review-wrapper">
+                        <div class="review-review">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr class="text-center">
+                                        <th class="width-1">
+                                            Author
+                                        </th>
+                                        <th class="width-2">
+                                            Rating
+                                        </th>
+                                        <th class="width-3">
+                                            Content
+                                        </th>
+                                        <th class="width-4">
+                                            Time
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="details-table">
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <td colspan="3">Total number of valuable reviews: </td>
+                                        <td colspan="1" class="review-total"></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
+    <script src="{{ mix('js/show-reviews.js') }}"></script>
     <script src="{{ mix('js/shop-offline.js') }}"></script>
 @endsection

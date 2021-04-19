@@ -20,8 +20,11 @@ $(function () {
             { data: 'id', name: 'id', className: 'text-center' },
             { data: 'name', name: 'name' },
             { data: 'rating', name: 'rating', className: 'text-center' },
+            { data: 'user_rating', name: 'user_rating', className: 'text-center' },
+            { data: 'city', name: 'city', className: 'text-center' },
+            { data: 'address', name: 'address' },
             { data: 'phone_number', name: 'phone_number', className: 'text-center' },
-            { data: 'location', name: 'location' },
+            { data: 'reviews', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
@@ -70,8 +73,11 @@ $(function () {
                     { data: 'id', name: 'id', className: 'text-center' },
                     { data: 'name', name: 'name' },
                     { data: 'rating', name: 'rating', className: 'text-center' },
+                    { data: 'user_rating', name: 'user_rating', className: 'text-center' },
+                    { data: 'city', name: 'city', className: 'text-center' },
+                    { data: 'address', name: 'address' },
                     { data: 'phone_number', name: 'phone_number', className: 'text-center' },
-                    { data: 'location', name: 'location' },
+                    { data: 'reviews', className: 'text-center' },
                 ]
             });
         }
