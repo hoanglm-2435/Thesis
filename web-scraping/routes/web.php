@@ -49,4 +49,6 @@ Route::group([
     Route::get('/shop', [GoogleMaps::class, 'getShop'])->name('shop-offline.shop');
 
     Route::post('/shop/filter', [GoogleMaps::class, 'filter'])->name('shop-offline.filter');
+
+    Route::get('/reviews/{id}', [GoogleMaps::class, 'getReviews'])->name('shop.reviews');
 });

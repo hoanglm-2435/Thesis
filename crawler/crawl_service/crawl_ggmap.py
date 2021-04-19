@@ -4,12 +4,13 @@ import datetime
 import json
 import MySQLdb
 import urllib3
-from urlextract import URLExtract
 
 gmaps = googlemaps.Client(
     key='AIzaSyAjLEkR0M8kV4je7G6fowZVZE0vP4gVCTE',
     timeout=5,
     retry_timeout=5,
+    retry_over_query_limit=True,
+    queries_per_second=1
     )
 
 urllib3.disable_warnings()
@@ -17,35 +18,35 @@ conn = MySQLdb.connect(
             'localhost',
             'root',
             'hoangminh99',
-            'shopee_crawler',
+            'thesis_test',
             charset="utf8mb4",
             use_unicode=True,
         )
 cursor = conn.cursor()
 
-cursor.execute("""DROP TABLE IF EXISTS shop_offline""")
-cursor.execute("""create table if not exists shop_offline(
-                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                place_id VARCHAR(512) NOT NULL,
-                name VARCHAR(512),
-                city VARCHAR(512),
-                address VARCHAR(512),
-                phone_number VARCHAR(512),
-                rating DOUBLE,
-                user_rating INT,
-                UNIQUE KEY(place_id)
-                )""")
-# cursor.execute("""DROP TABLE IF EXISTS reviews""")
-cursor.execute("""create table if not exists reviews(
-                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                place_id VARCHAR(512) NOT NULL,
-                author VARCHAR(512),
-                rating INT,
-                content LONGTEXT,
-                time TIMESTAMP,
-                UNIQUE KEY(author, time)
-                ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""")
-cursor.execute("""ALTER TABLE reviews MODIFY content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""")
+# cursor.execute("""DROP TABLE IF EXISTS shop_offline""")
+# cursor.execute("""create table if not exists shop_offline(
+#                 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+#                 place_id VARCHAR(512) NOT NULL,
+#                 name VARCHAR(512),
+#                 city VARCHAR(512),
+#                 address VARCHAR(512),
+#                 phone_number VARCHAR(512),
+#                 rating DOUBLE,
+#                 user_rating INT,
+#                 UNIQUE KEY(place_id)
+#                 )""")
+# # cursor.execute("""DROP TABLE IF EXISTS reviews""")
+# cursor.execute("""create table if not exists reviews(
+#                 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+#                 place_id VARCHAR(512) NOT NULL,
+#                 author VARCHAR(512),
+#                 rating INT,
+#                 content LONGTEXT,
+#                 time TIMESTAMP,
+#                 UNIQUE KEY(author, time)
+#                 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""")
+# cursor.execute("""ALTER TABLE reviews MODIFY content LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci""")
 
 def crawlMaps(searchString, city, lat, lng, nextPage=''):
     print('Crawling!!!')
@@ -59,10 +60,10 @@ def crawlMaps(searchString, city, lat, lng, nextPage=''):
             place_id = result['place_id']
             fields = ['name', 'formatted_phone_number', 'formatted_address', 'rating', 'user_ratings_total', 'review']
             place_result = gmaps.place(place_id=result['place_id'], fields=fields, language='vi')
-            
+
             # Crawl place
             place = place_result['result']
-            
+
             name = place.get('name')
             address = place.get('formatted_address')
             phone_number = place.get('formatted_phone_number') or ''
@@ -74,7 +75,7 @@ def crawlMaps(searchString, city, lat, lng, nextPage=''):
             print('Address: ', address)
             print('Rating: ', rating)
             print('User Rating total: ', user_rating_total)
-            
+
             cursor.execute("""REPLACE INTO shop_offline (place_id, name, city, address, phone_number, rating, user_rating) VALUES (%s, %s, %s, %s, %s, %s, %s)""", (
                     place_id,
                     name,
@@ -85,17 +86,17 @@ def crawlMaps(searchString, city, lat, lng, nextPage=''):
                     user_rating_total,
             ))
             conn.commit()
-            
+
             time.sleep(2)
-            
+
             # Crawl reviews
             if place_result['result'].get('reviews') is not None:
                 for review in place_result['result'].get('reviews'):
                     print('----------------')
                     timeReview = int(review['time'])
                     timeReview = datetime.datetime.fromtimestamp(timeReview)
-                    
-                    cursor.execute("""REPLACE INTO reviews (place_id, author, rating, content, time) VALUES (%s, %s, %s, %s, %s)""", (
+
+                    cursor.execute("""REPLACE INTO reviews (shop_offline_id, author, rating, content, time) VALUES (%s, %s, %s, %s, %s)""", (
                                 place_id,
                                 review['author_name'],
                                 review['rating'],

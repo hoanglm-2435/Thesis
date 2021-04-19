@@ -11,10 +11,20 @@ class ShopOffline extends Model
 
     protected $table = 'shop_offline';
 
+    public $timestamps = false;
+
     protected $fillable = [
+        'place_id',
         'name',
-        'rating',
-        'location',
+        'city',
+        'address',
         'phone_number',
+        'rating',
+        'user_rating',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'shop_offline_id', 'place_id');
+    }
 }

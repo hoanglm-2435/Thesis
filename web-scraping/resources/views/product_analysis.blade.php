@@ -50,8 +50,8 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold</th>
-                                        <th>Revenue(VND)</th>
+                                        <th>Sold Total</th>
+                                        <th>Revenue Total(VND)</th>
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
@@ -64,8 +64,8 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold</th>
-                                        <th>Revenue(VND)</th>
+                                        <th>Sold Total</th>
+                                        <th>Revenue Total(VND)</th>
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
