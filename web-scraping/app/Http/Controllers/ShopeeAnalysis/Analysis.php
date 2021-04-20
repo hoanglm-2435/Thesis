@@ -5,8 +5,10 @@ namespace App\Http\Controllers\ShopeeAnalysis;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\ShopeeCategory;
 use App\Models\ShopeeMall;
 use Carbon\Carbon;
+use Facade\Ignition\DumpRecorder\Dump;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +17,88 @@ use Yajra\DataTables\DataTables;
 
 class Analysis extends Controller
 {
-    public function showShop()
+    public function showCate()
     {
-        return view('shopee_analysis');
+        return view('shopee_cate');
     }
 
-    public function getShop()
+    public function getCate()
     {
-        $shops = ShopeeMall::all();
+        $categories = ShopeeCategory::all();
+
+        $cateAnalysis = [];
+        foreach ($categories as $cate) {
+            $shopAnalysis = $this->shopAnalysis($cate->shops);
+
+            $sold = 0;
+            $revenue = 0;
+            foreach ($shopAnalysis as $shop) {
+                $sold += $shop['sold'];
+                $revenue += $shop['revenue'];
+            }
+            $cateAnalysis[] = [
+                'id' => $cate->id,
+                'name' => $cate->name,
+                'url' => $cate->url,
+                'shop_count' => collect($shopAnalysis)->count(),
+                'sold' => $sold,
+                'revenue' => $revenue,
+            ];
+        }
+
+        return DataTables::of(collect($cateAnalysis))
+            ->addColumn('shop_list', function ($value) {
+                $url = route('shopee.show-shop', $value['id']);
+
+                return '
+                    <a href="' . $url . '">
+                        <button title="List shop of category"
+                                class="ml-2 btn btn-sm btn-default"
+                        >
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </a>
+                ';
+            })
+            ->rawColumns(['shop_list'])
+            ->make(true);
+    }
+
+    public function showShop($cateId)
+    {
+        $cate = ShopeeCategory::find($cateId);
+
+
+        return view('shopee_analysis', compact('cate'));
+    }
+
+    public function getShop($cateId)
+    {
+        $shops = ShopeeMall::where('cate_id', $cateId)->get();
+
+        $shopAnalysis = $this->shopAnalysis($shops);
+
+        return DataTables::of(collect($shopAnalysis))
+            ->addColumn('products', function ($value) {
+                $url = route('shopee.show-products', $value['id']);
+
+                return '
+                    <a href="' . $url . '">
+                        <button title="See the products of Shop"
+                                class="ml-2 btn btn-sm btn-default"
+                        >
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </a>
+                ';
+            })
+            ->rawColumns(['products'])
+            ->make(true);
+    }
+
+    public function shopAnalysis($shops)
+    {
+        $shopAnalysis = [];
 
         foreach ($shops as $shop) {
             $report = $this->getReport($shop->products);
@@ -43,27 +119,13 @@ class Analysis extends Controller
             ];
         }
 
-        return DataTables::of(collect($shopAnalysis))
-            ->addColumn('products', function ($value) {
-                $url = route('shopee.shop', $value['id']);
-
-                return '
-                    <a href="' . $url . '">
-                        <button title="See the products of Shop"
-                                class="ml-2 btn btn-sm btn-default"
-                        >
-                            <i class="far fa-eye"></i>
-                        </button>
-                    </a>
-                ';
-            })
-            ->rawColumns(['products'])
-            ->make(true);
+        return $shopAnalysis;
     }
 
     public function showProducts($shopId)
     {
         $shop = ShopeeMall::find($shopId);
+        $cateID = $shop->category()->first()->id;
 
         if (!Cache::has('analysis_at') && $shop->products->count() > 0) {
             $analysisAt = Product::all()->first()->created_at->toDayDateTimeString();
@@ -71,7 +133,7 @@ class Analysis extends Controller
             $analysisAt = Cache::get('analysis_at');
         }
 
-        return view('product_analysis', compact(['analysisAt', 'shop']));
+        return view('product_analysis', compact(['analysisAt', 'shop', 'cateID']));
     }
 
     public function getProducts($shopId)

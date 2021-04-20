@@ -17,7 +17,7 @@ $(document).ready(function() {
         },
         serverSide: true,
         ajax: {
-            url: route('shopee.products', shopId),
+            url: route('shopee.get-products', shopId),
         },
         columns: [
             { data: 'id', className: 'text-center' },

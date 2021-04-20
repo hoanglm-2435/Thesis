@@ -20,4 +20,9 @@ class ShopeeMall extends Model
     {
         return $this->hasMany(Product::class, 'shop_id');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(ShopeeCategory::class, 'cate_id');
+    }
 }

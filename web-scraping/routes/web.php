@@ -23,16 +23,20 @@ Route::group([
     'prefix' => 'shopee-analysis',
     'namespace' => 'ShopeeAnalysis',
 ], function () {
-    Route::get('/', [Analysis::class, 'showShop'])->name('shopee');
+    Route::get('/cate', [Analysis::class, 'showCate'])->name('shopee.cate');
 
-    Route::get('/shops', [Analysis::class, 'getShop'])->name('shopee.shops');
+    Route::get('/cate/get', [Analysis::class, 'getCate'])->name('shopee.get-cate');
+
+    Route::get('/shops/{id}', [Analysis::class, 'showShop'])->name('shopee.show-shop');
+
+    Route::get('/cate/shops/{id}/get', [Analysis::class, 'getShop'])->name('shopee.get-shop');
 
     Route::group([
         'prefix' => 'shop',
     ], function () {
-        Route::get('/{id}', [Analysis::class, 'showProducts'])->name('shopee.shop');
+        Route::get('/{id}', [Analysis::class, 'showProducts'])->name('shopee.show-products');
 
-        Route::get('/{id}/products', [Analysis::class, 'getProducts'])->name('shopee.products');
+        Route::get('/{id}/products', [Analysis::class, 'getProducts'])->name('shopee.get-products');
 
         Route::post('/filter/{id}', [Analysis::class, 'filter'])->name('filter.products');
 
