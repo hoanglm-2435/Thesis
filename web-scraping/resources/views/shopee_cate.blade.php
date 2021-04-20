@@ -7,16 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>
-                            Shopee Analysis -
-                            <a href="{{ $cate->url }}"> {{ $cate->name }}</a>
-                        </h1>
+                        <h1>Shopee Analysis</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('shopee.cate') }}">Shopee Category</a></li>
-                            <li class="breadcrumb-item active">Shopee Mall</li>
+                            <li class="breadcrumb-item active">Shopee Category</li>
                         </ol>
                     </div>
                 </div>
@@ -38,11 +34,11 @@
                                     <thead>
                                     <tr class="text-center">
                                         <th>ID</th>
-                                        <th>Shop Name</th>
-                                        <th>Product Count</th>
+                                        <th>Category</th>
+                                        <th>Shop Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
-                                        <th>Products</th>
+                                        <th>Shop List</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -50,11 +46,11 @@
                                     <tfoot>
                                     <tr class="text-center">
                                         <th>ID</th>
-                                        <th>Shop Name</th>
-                                        <th>Product Count</th>
+                                        <th>Category</th>
+                                        <th>Shop Count</th>
                                         <th>Sold</th>
                                         <th>Revenue</th>
-                                        <th>Products</th>
+                                        <th>Shop List</th>
                                     </tr>
                                     </tfoot>
                                 </table>
@@ -68,5 +64,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ mix('js/shopee-analysis.js') }}"></script>
+    <script src="{{ mix('js/shopee-cate.js') }}"></script>
 @endsection

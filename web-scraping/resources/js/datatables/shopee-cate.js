@@ -1,7 +1,4 @@
 $(function () {
-    const url = window.location.pathname;
-    const cateId = url.substring(url.lastIndexOf('/') + 1);
-
     $("#data-table").DataTable({
         dom: 'Bfrtip',
         paging: true,
@@ -17,7 +14,7 @@ $(function () {
         },
         serverSide: true,
         ajax: {
-            url: route('shopee.get-shop', cateId),
+            url: route('shopee.get-cate'),
         },
         columns: [
             { data: 'id', name: 'id', className: 'text-center' },
@@ -28,10 +25,10 @@ $(function () {
                     return `<a href="${full.url}">${full.name}</a>`;
                 }
             },
-            { data: 'product_count', name: 'product_count', className: 'text-center' },
+            { data: 'shop_count', name: 'shop_count', className: 'text-center' },
             { data: 'sold', name: 'sold', className: 'text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-center' },
-            { data: 'products', name: 'products', className: 'text-center' },
+            { data: 'shop_list', name: 'shop_list', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

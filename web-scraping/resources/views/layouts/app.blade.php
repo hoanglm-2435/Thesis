@@ -101,7 +101,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
                         <a
-                            href="{{ route('shopee') }}"
+                            href="{{ route('shopee.cate') }}"
                             class="nav-link {{ str_contains(request()->route()->uri(), 'shopee-analysis') ? 'active' : ''}}"
                         >
                             <i class="mx-1 fas fa-chart-line"></i>
@@ -111,6 +111,18 @@
                             </p>
                         </a>
                     </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a--}}
+{{--                            href="{{ route('shopee') }}"--}}
+{{--                            class="nav-link {{ str_contains(request()->route()->uri(), 'shopee-analysis') ? 'active' : ''}}"--}}
+{{--                        >--}}
+{{--                            <i class="mx-1 fas fa-chart-line"></i>--}}
+{{--                            <p class="ml-1">--}}
+{{--                                Shopee Analysis--}}
+{{--                                <span class="right badge badge-danger">New</span>--}}
+{{--                            </p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li class="nav-item">
                         <a
                             href="{{ route('shop-offline') }}"
