@@ -18,7 +18,7 @@ class CrawlServicePipeline(object):
             'localhost',
             'root',
             'hoangminh99',
-            'crawler_test',
+            'db_thesis',
             charset="utf8",
             use_unicode=True,
         )
@@ -41,7 +41,8 @@ class CrawlServicePipeline(object):
                 self.conn.commit()
 
             elif spider.name == 'shopee_mall':
-                self.cursor.execute("""INSERT INTO shopee_mall (name, url) VALUES (%s, %s)""", (
+                self.cursor.execute("""INSERT INTO shopee_mall (cate_id, name, url) VALUES (%s, %s, %s)""", (
+                    item['cate_id'],
                     item['name'],
                     item['url'],
                 ))
@@ -53,6 +54,13 @@ class CrawlServicePipeline(object):
                     item['rating'],
                     item['location'],
                     item['phone_number'],
+                ))
+                self.conn.commit()
+            elif spider.name == 'shopee_category':
+                self.cursor.execute("""INSERT INTO shopee_categories (cate_id, name, url) VALUES (%s, %s, %s)""", (
+                    item['cate_id'],
+                    item['name'],
+                    item['url'],
                 ))
                 self.conn.commit()
 

@@ -19,6 +19,7 @@ class ProductItem(scrapy.Item):
     created_at = scrapy.Field()
 
 class ShopeeMallItem(scrapy.Item):
+    cate_id = scrapy.Field()
     name = scrapy.Field()
     url = scrapy.Field()
 
@@ -34,3 +35,8 @@ class ShopOfflineItem(scrapy.Item):
     rating = scrapy.Field()
     location = scrapy.Field()
     phone_number = scrapy.Field()
+
+class ShopeeCategoryItem(scrapy.Item):
+    name = scrapy.Field()
+    url = scrapy.Field()
+    cate_id = scrapy.Field()
