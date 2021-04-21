@@ -56,6 +56,7 @@
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -70,6 +71,7 @@
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </tfoot>
                                 </table>

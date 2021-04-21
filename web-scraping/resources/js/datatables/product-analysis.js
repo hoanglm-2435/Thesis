@@ -33,6 +33,7 @@ $(document).ready(function() {
             { data: 'rating', className: 'text-center' },
             { data: 'updated_at', className: 'text-center' },
             { data: 'reviews', className: 'text-center' },
+            { data: 'chart', className: 'text-center' },
         ]
     });
 
@@ -137,6 +138,7 @@ $(document).ready(function() {
                 { data: 'rating', className: 'text-center' },
                 { data: 'updated_at', className: 'text-center' },
                 { data: 'reviews', className: 'text-center' },
+                { data: 'chart', className: 'text-center' },
             ]
         });
     }

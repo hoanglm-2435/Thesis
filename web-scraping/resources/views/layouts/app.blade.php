@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/ion-rangeslider/css/ion.rangeSlider.min.css') }}">
     <!-- bootstrap slider -->
     <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/bootstrap-slider/css/bootstrap-slider.min.css') }}">
+    <!-- chart js -->
+    <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/chart.js/Chart.min.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -187,6 +189,8 @@
 <script src="{{ asset('bower_components/admin-lte/plugins/ion-rangeslider/js/ion.rangeSlider.min.js') }}"></script>
 <!-- Bootstrap slider -->
 <script src="{{ asset('bower_components/admin-lte/plugins/bootstrap-slider/bootstrap-slider.min.js') }}"></script>
+<!-- chart js -->
+<script src="{{ asset('bower_components/admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
 
 @yield('script')
 </body>
