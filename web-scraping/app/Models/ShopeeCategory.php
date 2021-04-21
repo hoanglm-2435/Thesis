@@ -11,6 +11,8 @@ class ShopeeCategory extends Model
 
     protected $table = 'shopee_categories';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'cate_id',
         'name',

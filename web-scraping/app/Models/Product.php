@@ -11,15 +11,20 @@ class Product extends Model
 
     protected $table = 'products';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'shop_id',
-        'url',
+        'cate_id',
+        'item_id',
         'name',
+        'url',
         'price',
         'stock',
         'sold',
         'rating',
         'reviews',
+        'created_at'
     ];
 
     public function shop()
