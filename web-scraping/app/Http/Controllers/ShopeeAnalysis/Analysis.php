@@ -163,7 +163,21 @@ class Analysis extends Controller
                     </button>
                 ';
             })
-            ->rawColumns(['reviews', 'updated_at'])
+            ->addColumn('chart', function ($value) {
+                $href = route('product.show-chart', $value->id);
+
+                return '
+                    <a href=" ' . $href . ' ">
+                        <button
+                            title="Analysis Chart"
+                            class="ml-2 btn btn-sm btn-default"
+                        >
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </a>
+                ';
+            })
+            ->rawColumns(['reviews', 'updated_at', 'chart'])
             ->make(true);
     }
 
@@ -199,8 +213,7 @@ class Analysis extends Controller
                 (Select p1.id, p2.name, p2.url, p2.shop_id as shop, p2.price, p2.rating, p2.created_at, (p2.sold - p1.sold) as soldPerDay, (p2.sold - p1.sold)*p1.price as revenuePerDay FROM products as p1
                 join products as p2
                 on datediff(p2.created_at, p1.created_at) = 1
-                where p1.url = '$product->url' and p2.url = '$product->url'
-                order by id desc limit 1) as report",
+                where p1.url = '$product->url' and p2.url = '$product->url') as report",
             );
         }
 
@@ -251,5 +264,54 @@ class Analysis extends Controller
             })
             ->rawColumns(['reviews', 'updated_at'])
             ->make(true);
+    }
+
+    public function showChart($productId)
+    {
+        $product = Product::find($productId);
+
+        return view('product_chart', compact('product'));
+    }
+
+    public function getChart($productId)
+    {
+        $year = now()->year;
+
+        $product = Product::find($productId);
+
+        $sumData = DB::select("SELECT report.id, month(report.created_at) as month, SUM(report.soldPerDay) as sum_sold, SUM(report.revenuePerDay) as sum_revenue FROM
+                (Select p1.id, p2.created_at, (p2.sold - p1.sold) as soldPerDay, (p2.sold - p1.sold)*p1.price as revenuePerDay FROM products as p1
+                join products as p2
+                on datediff(p2.created_at, p1.created_at) = 1
+                where p1.url = '$product->url' and p2.url = '$product->url') as report
+                where year(report.created_at) = '$year'
+                group by month(report.created_at)",
+        );
+
+        $sumRevenue = array_fill(0, 11, 0);
+        $sumSold = array_fill(0, 11, 0);
+
+        $titleChart = 'STATISTICS REVENUE AND SOLD BY MONTH';
+        $revenueLabel = 'Revenue';
+        $soldLabel = 'Sold';
+        $rightLabel = 'Products';
+        $month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        foreach ($sumData as $key => $sumForMonth) {
+            $sumRevenue[$sumForMonth->month - 1] = $sumForMonth->sum_revenue;
+            $sumSold[$sumForMonth->month - 1] = $sumForMonth->sum_sold;
+        }
+
+        $dataChart = [
+            'title_chart' => $titleChart,
+            'revenue_label' => $revenueLabel,
+            'sold_label' => $soldLabel,
+            'right_label' => $rightLabel,
+            'total_sold' => $sumSold,
+            'total_revenue' => $sumRevenue,
+            'labels' => $month,
+        ];
+
+        return response()->json($dataChart);
     }
 }

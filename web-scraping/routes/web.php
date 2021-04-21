@@ -41,6 +41,10 @@ Route::group([
         Route::post('/filter/{id}', [Analysis::class, 'filter'])->name('filter.products');
 
         Route::get('/comments/{id}', [Analysis::class, 'getComments'])->name('product.comments');
+
+        Route::get('product/{id}', [Analysis::class, 'showChart'])->name('product.show-chart');
+
+        Route::get('product/{id}/chart', [Analysis::class, 'getChart'])->name('product.get-chart');
     });
 });
 
