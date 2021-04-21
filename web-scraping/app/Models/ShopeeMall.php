@@ -14,6 +14,8 @@ class ShopeeMall extends Model
     protected $fillable = [
         'name',
         'url',
+        'cate_id',
+        'shop_id',
     ];
 
     public function products()

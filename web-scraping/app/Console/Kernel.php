@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CrawlCategory;
+use App\Console\Commands\CrawlComment;
+use App\Console\Commands\CrawlProduct;
+use App\Console\Commands\CrawlShop;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +17,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        CrawlShop::class,
+        CrawlProduct::class,
+        CrawlComment::class,
+        CrawlCategory::class,
     ];
 
     /**
