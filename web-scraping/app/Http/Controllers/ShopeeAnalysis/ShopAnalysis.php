@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ShopeeAnalysis;
 use App\Http\Controllers\Controller;
 use App\Models\ShopeeCategory;
 use App\Models\ShopeeMall;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -28,7 +29,7 @@ class ShopAnalysis extends Controller
 
         foreach ($shops as $shop) {
             $revenues[] = DB::table('product_revenue')
-                ->selectRaw('shop_id, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('shop_id, created_at as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('shop_id', $shop->id)
                 ->get();
         }
@@ -52,6 +53,16 @@ class ShopAnalysis extends Controller
                 foreach ($revenues as $revenue) {
                     if($revenue->first()->shop_id === $value->id) {
                         return number_format($revenue->first()->revenue, 0, '', ',');
+                    };
+                }
+            })
+            ->addColumn('updated_at', function ($value) use ($revenues) {
+                foreach ($revenues as $revenue) {
+                    if($revenue->first()->shop_id === $value->id) {
+                        $updated_at = new Carbon($revenue->first()->updated_at);
+                        $diffTime = Carbon::now()->diffForHumans($updated_at);
+
+                        return $diffTime;
                     };
                 }
             })
@@ -82,7 +93,7 @@ class ShopAnalysis extends Controller
                     </a>
                 ';
             })
-            ->rawColumns(['product_count', 'sold', 'revenue', 'products', 'chart'])
+            ->rawColumns(['product_count', 'sold', 'revenue', 'products', 'chart', 'updated_at'])
             ->make(true);
     }
 
@@ -111,7 +122,7 @@ class ShopAnalysis extends Controller
         $sumRevenue = array_fill(0, 11, 0);
         $sumSold = array_fill(0, 11, 0);
 
-        $titleChart = 'STATISTICS REVENUE AND SOLD BY MONTH OF SHOP';
+        $titleChart = 'STATISTICS REVENUE AND SOLD BY MONTH OF THIS SHOP IN ' . date('Y');
         $revenueLabel = 'Revenue';
         $soldLabel = 'Sold';
         $rightLabel = 'Products';

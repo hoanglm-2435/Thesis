@@ -12,6 +12,7 @@ $(document).ready(function() {
             type: 'get',
             dataType: 'json',
             success: function (response) {
+                const product = response.product;
                 const comment = response.comment;
 
                 if (comment !== null) {
@@ -25,6 +26,9 @@ $(document).ready(function() {
                         </tr>`
                         );
                     }
+
+                    $('.product-name').html(product.name);
+                    $('.product-name').attr('href', product.url);
                     $('.comment-total').html(comment.length);
                 } else {
                     $('.comment-total').html('0');

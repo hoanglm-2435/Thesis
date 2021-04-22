@@ -25,8 +25,16 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform</h3>
+                            <div class="card-header row align-items-center d-flex">
+                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt }}</b></h3>
+                                <a class="ml-auto" href="{{ route('market-share.show-chart') }}">
+                                    <button
+                                        title="Analysis Chart"
+                                        class="btn btn-default"
+                                    >
+                                        <i class="fas fa-chart-pie"> Market Share Analysis</i>
+                                    </button>
+                                </a>
                             </div>
 
                             <div class="card-body">
@@ -39,6 +47,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
+                                        <th>Updated At</th>
                                         <th>Shop List</th>
                                         <th>Analysis Chart</th>
                                     </tr>
@@ -53,6 +62,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
+                                        <th>Updated At</th>
                                         <th>Shop List</th>
                                         <th>Analysis Chart</th>
                                     </tr>

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Product;
 use App\Models\ProductRevenue;
 use App\Models\ShopeeMall;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -94,8 +95,8 @@ class CrawlProduct extends Command
         curl_setopt($ch, CURLOPT_URL, "https://banhang.shopee.vn/api/v2/login/");
         $response = curl_exec($ch);
 
-        $createdAt = now()->format('Y-m-d h:i:s');
-//        $createdAt = now()->addDays(2)->format('Y-m-d h:i:s');
+//        $createdAt = now()->format('Y-m-d h:i:s');
+        $createdAt = now()->addDays(1)->format('Y-m-d h:i:s');
 
 //        Product::truncate();
 //        ProductRevenue::truncate();
@@ -115,10 +116,12 @@ class CrawlProduct extends Command
                     foreach ($data as $item) {
                         $product = Arr::get($item, 'item_basic');
                         $ratingStar = Arr::get($product['item_rating'], 'rating_star');
-                        echo $product['name'];
+                        echo $shop->category->name . ' - ' . $shop->name . ': ' . $product['name'];
                         echo "\n";
+                        $url = "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'];
                         $lastProduct = DB::table('products')
-                            ->where('name', $product['name'])
+                            ->where('url', $url)
+                            ->where('shop_id', $shop->id)
                             ->orderBy('created_at', 'DESC')
                             ->first();
 
@@ -129,26 +132,33 @@ class CrawlProduct extends Command
                             'name' => $product['name'],
                             'url' => "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'],
                             'stock' => $product['stock'],
-                            'sold' => $product['sold'], // + rand(6,7)
+                            'sold' => $product['sold'] + rand(1,3), // + rand(6,7)
                             'price' => $product['price']/100000,
                             'rating' => round($ratingStar, 2),
                             'reviews' => $product['cmt_count'],
                             'created_at' => $createdAt,
                         ]);
-                        if ($lastProduct) {
-                            $soldPerDay = $newProduct->sold - $lastProduct->sold;
-                            $revenuePerDay = $soldPerDay * $lastProduct->price;
 
-                            ProductRevenue::create([
-                                'shop_id' => $shop->id,
-                                'product_id' => $newProduct->id,
-                                'cate_id' => $shop->cate_id,
-                                'name' => $product['name'],
-                                'price' => $newProduct->price,
-                                'sold_per_day' => $soldPerDay,
-                                'revenue_per_day' => $revenuePerDay,
-                                'created_at' => $newProduct->created_at,
-                            ]);
+                        if ($lastProduct) {
+                            $newTime = new Carbon($newProduct->created_at);
+                            $oldTime = new Carbon($lastProduct->created_at);
+
+                            if ($newTime->greaterThan($oldTime)) {
+                                $soldPerDay = $newProduct->sold - $lastProduct->sold;
+                                $revenuePerDay = $soldPerDay * $lastProduct->price;
+
+                                ProductRevenue::create([
+                                    'shop_id' => $shop->id,
+                                    'product_id' => $newProduct->id,
+                                    'cate_id' => $shop->cate_id,
+                                    'name' => $product['name'],
+                                    'url' => $newProduct->url,
+                                    'price' => $newProduct->price,
+                                    'sold_per_day' => $soldPerDay,
+                                    'revenue_per_day' => $revenuePerDay,
+                                    'created_at' => $newProduct->created_at,
+                                ]);
+                            }
                         }
                     }
                 }

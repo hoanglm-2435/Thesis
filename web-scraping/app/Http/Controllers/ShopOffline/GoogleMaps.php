@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Models\ShopOffline;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use function Psy\sh;
 
@@ -22,15 +23,29 @@ class GoogleMaps extends Controller
 
         return Datatables::of($shops)
             ->addColumn('reviews', function ($value) {
-                return '
-                    <button title="Quick View" data-toggle="modal"
-                            id="list-reviews"
-                            class="ml-2 btn btn-sm btn-default"
-                            data-id="' . $value->id . '"
-                            data-target="#reviewModal" href="#">
-                        <i class="far fa-eye"></i>
-                    </button>
-                ';
+                $reviews = DB::table('reviews')
+                    ->where('shop_offline_id', $value->place_id)
+                    ->get();
+
+                if ($reviews && $reviews->count() > 0) {
+                    return '
+                        <button title="Comment of place" data-toggle="modal"
+                                id="list-reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                data-id="' . $value->id . '"
+                                data-target="#reviewModal" href="#">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                } else {
+                    return '
+                        <button title="This place has no reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                disabled>
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                }
             })
             ->rawColumns(['reviews'])
             ->make(true);
@@ -67,15 +82,29 @@ class GoogleMaps extends Controller
 
         return Datatables::of($shop)
             ->addColumn('reviews', function ($value) {
-                return '
-                    <button title="Quick View" data-toggle="modal"
-                            id="list-reviews"
-                            class="ml-2 btn btn-sm btn-default"
-                            data-id="' . $value->id . '"
-                            data-target="#reviewModal" href="#">
-                        <i class="far fa-eye"></i>
-                    </button>
-                ';
+                $reviews = DB::table('reviews')
+                    ->where('shop_offline_id', $value->place_id)
+                    ->get();
+
+                if ($reviews && $reviews->count() > 0) {
+                    return '
+                        <button title="Comment of place" data-toggle="modal"
+                                id="list-reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                data-id="' . $value->id . '"
+                                data-target="#reviewModal" href="#">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                } else {
+                    return '
+                        <button title="This place has no reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                disabled>
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                }
             })
             ->rawColumns(['reviews'])
             ->make(true);

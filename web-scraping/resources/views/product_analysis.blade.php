@@ -8,10 +8,8 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="text-black">
-                            Category:
-                            <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a>
-                            - Shop:
-                            <a href="{{ $shop->url }}"> {{ $shop->name }}</a>
+                            <span>Category: <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a><br></span>
+                            <span>Shop: <a href="{{ $shop->url }}"> {{ $shop->name }}</a></span>
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -43,6 +41,7 @@
                                         <option value="rating">Rating</option>
                                     </select>
                                 </div>
+                                <input type="hidden" value="{{ $priceMax }}" id="price-max">
                                 <input type="text" id="filter-range" readonly>
                             </div>
 
@@ -88,7 +87,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal-fullscreen">
                 <div class="modal-header">
-                    <h2>List Comment Of Product</h2>
+                    <<a href="" class="product-name"></a>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>

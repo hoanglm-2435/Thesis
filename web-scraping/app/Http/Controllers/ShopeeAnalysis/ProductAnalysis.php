@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\ShopeeMall;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -19,13 +18,13 @@ class ProductAnalysis extends Controller
         $shop = ShopeeMall::find($shopId);
         $cateID = $shop->category()->first()->id;
 
-        if (!Cache::has('analysis_at') && $shop->products->count() > 0) {
-            $analysisAt = Product::all()->first()->created_at;
-        } else {
-            $analysisAt = Cache::get('analysis_at');
-        }
+        $priceMax = DB::table('products')
+            ->selectRaw('MAX(price) as price_max')
+            ->where('shop_id', $shopId)
+            ->get();
+        $priceMax = $priceMax[0]->price_max;
 
-        return view('product_analysis', compact(['analysisAt', 'shop', 'cateID']));
+        return view('product_analysis', compact(['shop', 'cateID', 'priceMax']));
     }
 
     public function getProducts($shopId)
@@ -43,21 +42,21 @@ class ProductAnalysis extends Controller
             })
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         return $revenue->first()->sold;
                     };
                 }
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         $updated_at = new Carbon($revenue->first()->updated_at);
                         $diffTime = Carbon::now()->diffForHumans($updated_at);
 
@@ -66,15 +65,28 @@ class ProductAnalysis extends Controller
                 }
             })
             ->addColumn('reviews', function ($value) {
-                return '
-                    <button title="Quick View" data-toggle="modal"
-                            id="list-comments"
-                            class="ml-2 btn btn-sm btn-default"
-                            data-id="' . $value->id . '"
-                            data-target="#commentModal" href="#">
-                        <i class="far fa-eye"></i>
-                    </button>
-                ';
+                $comment = DB::table('comments')
+                    ->where('product_id', $value->id)
+                    ->get();
+                if ($comment && $comment->count() > 0) {
+                    return '
+                        <button title="Comments of product" data-toggle="modal"
+                                id="list-comments"
+                                class="ml-2 btn btn-sm btn-default"
+                                data-id="' . $value->id . '"
+                                data-target="#commentModal" href="#">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                } else {
+                    return '
+                        <button title="This product has no reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                disabled>
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                }
             })
             ->addColumn('chart', function ($value) {
                 $href = route('product.show-chart', $value->id);
@@ -99,8 +111,8 @@ class ProductAnalysis extends Controller
         $revenues = array();
         foreach ($products as $product) {
             $revenues[] = DB::table('product_revenue')
-                ->selectRaw('name, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, created_at as updated_at')
-                ->where('name', $product->name)
+                ->selectRaw('url, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, created_at as updated_at')
+                ->where('url', $product->url)
                 ->get();
         }
 
@@ -111,6 +123,11 @@ class ProductAnalysis extends Controller
     {
         $productGroup = Product::find($productId);
         $firstProduct = Product::where('url', $productGroup->url)->first();
+
+        $product = [
+            'name' => $firstProduct->name,
+            'url' => $firstProduct->url,
+        ];
 
         $comments = Comment::where('product_id', $firstProduct->id)
             ->get();
@@ -126,6 +143,7 @@ class ProductAnalysis extends Controller
         }
 
         return response()->json([
+            'product' => $product,
             'comment' => $comment ?? null,
         ]);
     }
@@ -148,21 +166,21 @@ class ProductAnalysis extends Controller
         return DataTables::of($products)
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         return $revenue->first()->sold;
                     };
                 }
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->name === $value->name) {
+                    if($revenue->first()->url === $value->url) {
                         $updated_at = new Carbon($revenue->first()->updated_at);
                         $diffTime = Carbon::now()->diffForHumans($updated_at);
 
@@ -171,15 +189,28 @@ class ProductAnalysis extends Controller
                 }
             })
             ->addColumn('reviews', function ($value) {
-                return '
-                    <button title="Quick View" data-toggle="modal"
-                            id="list-comments"
-                            class="ml-2 btn btn-sm btn-default"
-                            data-id="' . $value->id . '"
-                            data-target="#commentModal" href="#">
-                        <i class="far fa-eye"></i>
-                    </button>
-                ';
+                $comment = DB::table('comments')
+                    ->where('product_id', $value->id)
+                    ->get();
+                if ($comment && $comment->count() > 0) {
+                    return '
+                        <button title="Comments of product" data-toggle="modal"
+                                id="list-comments"
+                                class="ml-2 btn btn-sm btn-default"
+                                data-id="' . $value->id . '"
+                                data-target="#commentModal" href="#">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                } else {
+                    return '
+                        <button title="This product has no reviews"
+                                class="ml-2 btn btn-sm btn-default"
+                                disabled>
+                            <i class="far fa-eye"></i>
+                        </button>
+                    ';
+                }
             })
             ->addColumn('chart', function ($value) {
                 $href = route('product.show-chart', $value->id);
@@ -219,7 +250,7 @@ class ProductAnalysis extends Controller
                 DB::raw('MONTH(created_at) as month')
             )
             ->whereYear('created_at', $year)
-            ->where('name', $product->name)
+            ->where('url', $product->url)
             ->where('shop_id', $product->shop_id)
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->get();
@@ -227,7 +258,7 @@ class ProductAnalysis extends Controller
         $sumRevenue = array_fill(0, 11, 0);
         $sumSold = array_fill(0, 11, 0);
 
-        $titleChart = 'STATISTICS REVENUE AND SOLD BY MONTH OF PRODUCT';
+        $titleChart = 'STATISTICS REVENUE AND SOLD BY MONTH OF THIS PRODUCT IN ' . date('Y');
         $revenueLabel = 'Revenue';
         $soldLabel = 'Sold';
         $rightLabel = 'Products';

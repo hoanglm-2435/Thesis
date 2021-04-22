@@ -31,6 +31,7 @@ $(function () {
             { data: 'product_count', name: 'product_count', className: 'text-center' },
             { data: 'sold', name: 'sold', className: 'text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-center' },
+            { data: 'updated_at', name: 'updated_at', className: 'text-center' },
             { data: 'products', name: 'products', className: 'text-center' },
             { data: 'chart', className: 'text-center' },
         ]

@@ -30,7 +30,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform</h3>
+                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt }}</b></h3>
                             </div>
 
                             <div class="card-body">
@@ -42,6 +42,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
+                                        <th>Updated At</th>
                                         <th>Products</th>
                                         <th>Analysis Chart</th>
                                     </tr>
@@ -55,6 +56,7 @@
                                         <th>Product Count</th>
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
+                                        <th>Updated At</th>
                                         <th>Products</th>
                                         <th>Analysis Chart</th>
                                     </tr>
