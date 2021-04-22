@@ -9,23 +9,13 @@
                     <div class="col-sm-6">
                         <h1 class="text-black">
                             Shopee Analysis -
-                            <a href="{{ $product->url }}"> {{ $product->name }}</a>
+                            <a href="{{ $cate->url }}"> {{ $cate->name }}</a>
                         </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('shopee.cate') }}">Shopee Category</a></li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('shopee.show-shop', $product->shop->category()->first()->id) }}">
-                                    Shopee Mall
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('shopee.show-products', $product->shop->id) }}">
-                                    Products
-                                </a>
-                            </li>
                             <li class="breadcrumb-item active">Chart</li>
                         </ol>
                     </div>
@@ -56,5 +46,5 @@
 @endsection
 
 @section('script')
-    <script src="{{ mix('js/product-chart.js') }}"></script>
+    <script src="{{ mix('js/category-chart.js') }}"></script>
 @endsection

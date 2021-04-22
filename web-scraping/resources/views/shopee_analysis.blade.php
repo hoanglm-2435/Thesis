@@ -8,7 +8,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>
-                            Shopee Analysis -
+                            Category:
                             <a href="{{ $cate->url }}"> {{ $cate->name }}</a>
                         </h1>
                     </div>
@@ -41,8 +41,9 @@
                                         <th>Shop Name</th>
                                         <th>Product Count</th>
                                         <th>Sold</th>
-                                        <th>Revenue</th>
+                                        <th>Revenue (VND)</th>
                                         <th>Products</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -53,8 +54,9 @@
                                         <th>Shop Name</th>
                                         <th>Product Count</th>
                                         <th>Sold</th>
-                                        <th>Revenue</th>
+                                        <th>Revenue (VND)</th>
                                         <th>Products</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </tfoot>
                                 </table>

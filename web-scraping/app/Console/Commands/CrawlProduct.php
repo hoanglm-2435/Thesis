@@ -3,9 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Models\Product;
+use App\Models\ProductRevenue;
 use App\Models\ShopeeMall;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class CrawlProduct extends Command
 {
@@ -93,8 +95,10 @@ class CrawlProduct extends Command
         $response = curl_exec($ch);
 
         $createdAt = now()->format('Y-m-d h:i:s');
+//        $createdAt = now()->addDays(2)->format('Y-m-d h:i:s');
 
 //        Product::truncate();
+//        ProductRevenue::truncate();
         $shops = ShopeeMall::all();
 
         foreach ($shops as $shop) {
@@ -113,26 +117,48 @@ class CrawlProduct extends Command
                         $ratingStar = Arr::get($product['item_rating'], 'rating_star');
                         echo $product['name'];
                         echo "\n";
+                        $lastProduct = DB::table('products')
+                            ->where('name', $product['name'])
+                            ->orderBy('created_at', 'DESC')
+                            ->first();
 
-                        Product::create([
+                        $newProduct = Product::create([
                             'shop_id' => $shop->id,
-                            'cate_id' => $product['catid'],
+                            'cate_id' => $shop->cate_id,
                             'item_id' => $product['itemid'],
                             'name' => $product['name'],
                             'url' => "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'],
                             'stock' => $product['stock'],
-                            'sold' => $product['sold'],
+                            'sold' => $product['sold'], // + rand(6,7)
                             'price' => $product['price']/100000,
                             'rating' => round($ratingStar, 2),
                             'reviews' => $product['cmt_count'],
                             'created_at' => $createdAt,
                         ]);
+                        if ($lastProduct) {
+                            $soldPerDay = $newProduct->sold - $lastProduct->sold;
+                            $revenuePerDay = $soldPerDay * $lastProduct->price;
+
+                            ProductRevenue::create([
+                                'shop_id' => $shop->id,
+                                'product_id' => $newProduct->id,
+                                'cate_id' => $shop->cate_id,
+                                'name' => $product['name'],
+                                'price' => $newProduct->price,
+                                'sold_per_day' => $soldPerDay,
+                                'revenue_per_day' => $revenuePerDay,
+                                'created_at' => $newProduct->created_at,
+                            ]);
+                        }
                     }
                 }
 
                 $newest += 30;
             }
         }
+        echo "Crawl success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+        echo "\n";
+
         return 0;
     }
 

@@ -28,8 +28,8 @@ $(document).ready(function() {
                 }
             },
             { data: 'price', className: 'text-center' },
-            { data: 'soldPerMonth', className: 'text-center' },
-            { data: 'revenuePerMonth', className: 'text-center' },
+            { data: 'sold', className: 'text-center' },
+            { data: 'revenue', className: 'text-center' },
             { data: 'rating', className: 'text-center' },
             { data: 'updated_at', className: 'text-center' },
             { data: 'reviews', className: 'text-center' },
@@ -133,8 +133,8 @@ $(document).ready(function() {
                     }
                 },
                 { data: 'price', className: 'text-center' },
-                { data: 'soldPerMonth', className: 'text-center' },
-                { data: 'revenuePerMonth', className: 'text-center' },
+                { data: 'sold', className: 'text-center' },
+                { data: 'revenue', className: 'text-center' },
                 { data: 'rating', className: 'text-center' },
                 { data: 'updated_at', className: 'text-center' },
                 { data: 'reviews', className: 'text-center' },
