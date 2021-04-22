@@ -92,7 +92,7 @@ class CrawlShop extends Command
         $categories = ShopeeCategory::all();
 
         foreach ($categories as $cate) {
-            echo $cate->name."\n";
+            echo $cate->name . "\n";
             $response = $this->getShopApi($cate->cate_id, $ch);
             $data = $response["data"]['brands'];
 
@@ -105,10 +105,12 @@ class CrawlShop extends Command
                             echo $shop['brand_name'];
                             echo "\n";
 
-                            ShopeeMall::updateOrCreate([
+                            ShopeeMall::firstOrCreate([
+                                'shop_id' => $shop['shopid'],
+                            ], [
                                 'name' => $shop['brand_name'],
                                 'url' => 'https://shopee.vn/' . $shop['username'],
-                                'cate_id' => $cate->cate_id,
+                                'cate_id' => $cate->id,
                                 'shop_id' => $shop['shopid'],
                             ]);
                         }

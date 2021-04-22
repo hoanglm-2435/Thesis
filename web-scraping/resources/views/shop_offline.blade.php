@@ -74,7 +74,7 @@
     </div>
     <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style="width: 130%">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h2>List Reviews Of Place</h2>
                     <button type="button" class="close"
@@ -119,6 +119,36 @@
             </div>
         </div>
     </div>
+    <style>
+        .modal {
+            padding: 0 !important; // override inline padding-right added from js
+        }
+        .modal .modal-dialog {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        .modal .modal-content {
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+        }
+        #details-table {
+            word-break: break-word;
+        }
+        .modal .modal-body {
+            overflow-y: auto;
+        }.modal-dialog {
+            width: 100%;
+            height: 100%;
+        }
+        .modal-content {
+            height: auto;
+            min-height: 100%;
+            border-radius: 0;
+        }
+    </style>
 @endsection
 
 @section('script')

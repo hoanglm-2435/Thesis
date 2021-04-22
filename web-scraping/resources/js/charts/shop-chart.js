@@ -1,6 +1,6 @@
 $(document).ready(function () {
     const url = window.location.pathname;
-    const productId = url.substring(url.lastIndexOf('/') + 1);
+    const shopId = url.substring(url.lastIndexOf('/') + 1);
 
     $.ajaxSetup({
         headers: {
@@ -9,7 +9,7 @@ $(document).ready(function () {
     });
     $.ajax({
         type: 'get',
-        url: route('product.get-chart', productId),
+        url: route('shop.get-chart', shopId),
         success: function (response) {
             Chart.defaults.global.defaultFontColor = '#000000';
             Chart.defaults.global.defaultFontFamily = 'Helvetica';
@@ -88,7 +88,7 @@ $(document).ready(function () {
                                 display: true
                             },
                             ticks: {
-                                stepSize: 1
+                                stepSize: 100,
                             },
                             id: "sold"
                         }]

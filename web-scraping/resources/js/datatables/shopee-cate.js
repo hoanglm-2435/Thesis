@@ -26,9 +26,11 @@ $(function () {
                 }
             },
             { data: 'shop_count', name: 'shop_count', className: 'text-center' },
+            { data: 'product_count', name: 'product_count', className: 'text-center' },
             { data: 'sold', name: 'sold', className: 'text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-center' },
             { data: 'shop_list', name: 'shop_list', className: 'text-center' },
+            { data: 'chart', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

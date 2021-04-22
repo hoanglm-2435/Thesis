@@ -19,4 +19,6 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/datatables/shop-offline.js', 'public/js')
     .js('resources/js/datatables/shopee-cate.js', 'public/js')
     .js('resources/js/show-reviews.js', 'public/js')
-    .js('resources/js/get-chart.js', 'public/js');
+    .js('resources/js/charts/product-chart.js', 'public/js')
+    .js('resources/js/charts/shop-chart.js', 'public/js')
+    .js('resources/js/charts/category-chart.js', 'public/js');

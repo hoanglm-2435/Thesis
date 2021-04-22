@@ -36,4 +36,9 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function revenues()
+    {
+        return $this->hasMany(ProductRevenue::class, 'product_id');
+    }
 }

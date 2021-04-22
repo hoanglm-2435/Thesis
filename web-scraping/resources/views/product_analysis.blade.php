@@ -8,7 +8,9 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="text-black">
-                            Shopee Analysis -
+                            Category:
+                            <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a>
+                            - Shop:
                             <a href="{{ $shop->url }}"> {{ $shop->name }}</a>
                         </h1>
                     </div>
@@ -84,7 +86,7 @@
     </div>
     <div class="modal fade" id="commentModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content" style="width: 130%">
+            <div class="modal-content modal-fullscreen">
                 <div class="modal-header">
                     <h2>List Comment Of Product</h2>
                     <button type="button" class="close"
@@ -129,6 +131,28 @@
             </div>
         </div>
     </div>
+    <style>
+        .modal {
+            padding: 0 !important; // override inline padding-right added from js
+        }
+        .modal .modal-dialog {
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        .modal .modal-content {
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+        }
+        #details-table {
+            word-break: break-word;
+        }
+        .modal .modal-body {
+            overflow-y: auto;
+        }
+    </style>
 @endsection
 
 @section('script')

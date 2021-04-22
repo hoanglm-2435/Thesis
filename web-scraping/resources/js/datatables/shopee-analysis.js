@@ -32,6 +32,7 @@ $(function () {
             { data: 'sold', name: 'sold', className: 'text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-center' },
             { data: 'products', name: 'products', className: 'text-center' },
+            { data: 'chart', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

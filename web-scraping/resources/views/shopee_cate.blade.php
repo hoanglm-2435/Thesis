@@ -36,9 +36,11 @@
                                         <th>ID</th>
                                         <th>Category</th>
                                         <th>Shop Count</th>
+                                        <th>Product Count</th>
                                         <th>Sold</th>
-                                        <th>Revenue</th>
+                                        <th>Revenue (VND)</th>
                                         <th>Shop List</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -48,9 +50,11 @@
                                         <th>ID</th>
                                         <th>Category</th>
                                         <th>Shop Count</th>
+                                        <th>Product Count</th>
                                         <th>Sold</th>
-                                        <th>Revenue</th>
+                                        <th>Revenue (VND)</th>
                                         <th>Shop List</th>
+                                        <th>Analysis Chart</th>
                                     </tr>
                                     </tfoot>
                                 </table>

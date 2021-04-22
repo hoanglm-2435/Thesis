@@ -27,4 +27,9 @@ class ShopeeMall extends Model
     {
         return $this->belongsTo(ShopeeCategory::class, 'cate_id');
     }
+
+    public function revenues()
+    {
+        return $this->hasMany(ProductRevenue::class, 'shop_id');
+    }
 }

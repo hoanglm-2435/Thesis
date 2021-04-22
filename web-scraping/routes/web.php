@@ -1,6 +1,8 @@
 <?php
 
-use App\Http\Controllers\ShopeeAnalysis\Analysis;
+use App\Http\Controllers\ShopeeAnalysis\ProductAnalysis;
+use App\Http\Controllers\ShopeeAnalysis\ShopeeCate;
+use App\Http\Controllers\ShopeeAnalysis\ShopAnalysis;
 use App\Http\Controllers\ShopOffline\GoogleMaps;
 use Illuminate\Support\Facades\Route;
 
@@ -23,28 +25,44 @@ Route::group([
     'prefix' => 'shopee-analysis',
     'namespace' => 'ShopeeAnalysis',
 ], function () {
-    Route::get('/cate', [Analysis::class, 'showCate'])->name('shopee.cate');
+    Route::group([
+        'prefix' => 'cate',
+    ], function () {
+        Route::get('/', [ShopeeCate::class, 'showCate'])->name('shopee.cate');
 
-    Route::get('/cate/get', [Analysis::class, 'getCate'])->name('shopee.get-cate');
+        Route::get('/get', [ShopeeCate::class, 'getCate'])->name('shopee.get-cate');
 
-    Route::get('/shops/{id}', [Analysis::class, 'showShop'])->name('shopee.show-shop');
+        Route::get('/chart/{id}', [ShopeeCate::class, 'showChart'])->name('cate.show-chart');
 
-    Route::get('/cate/shops/{id}/get', [Analysis::class, 'getShop'])->name('shopee.get-shop');
+        Route::get('/chart/{id}/get', [ShopeeCate::class, 'getChart'])->name('cate.get-chart');
+    });
 
     Route::group([
         'prefix' => 'shop',
     ], function () {
-        Route::get('/{id}', [Analysis::class, 'showProducts'])->name('shopee.show-products');
+        Route::get('/{id}', [ShopAnalysis::class, 'showShop'])->name('shopee.show-shop');
 
-        Route::get('/{id}/products', [Analysis::class, 'getProducts'])->name('shopee.get-products');
+        Route::get('/{id}/get', [ShopAnalysis::class, 'getShop'])->name('shopee.get-shop');
 
-        Route::post('/filter/{id}', [Analysis::class, 'filter'])->name('filter.products');
+        Route::get('/chart/{id}', [ShopAnalysis::class, 'showChart'])->name('shop.show-chart');
 
-        Route::get('/comments/{id}', [Analysis::class, 'getComments'])->name('product.comments');
+        Route::get('/chart/{id}/get', [ShopAnalysis::class, 'getChart'])->name('shop.get-chart');
+    });
 
-        Route::get('product/{id}', [Analysis::class, 'showChart'])->name('product.show-chart');
+    Route::group([
+        'prefix' => 'product',
+    ], function () {
+        Route::get('/{id}', [ProductAnalysis::class, 'showProducts'])->name('shopee.show-products');
 
-        Route::get('product/{id}/chart', [Analysis::class, 'getChart'])->name('product.get-chart');
+        Route::get('/{id}/get', [ProductAnalysis::class, 'getProducts'])->name('shopee.get-products');
+
+        Route::post('/filter/{id}', [ProductAnalysis::class, 'filter'])->name('filter.products');
+
+        Route::get('/comments/{id}', [ProductAnalysis::class, 'getComments'])->name('product.comments');
+
+        Route::get('/chart/{id}', [ProductAnalysis::class, 'showChart'])->name('product.show-chart');
+
+        Route::get('/chart/{id}/get', [ProductAnalysis::class, 'getChart'])->name('product.get-chart');
     });
 });
 
