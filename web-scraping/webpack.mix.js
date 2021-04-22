@@ -21,4 +21,5 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/show-reviews.js', 'public/js')
     .js('resources/js/charts/product-chart.js', 'public/js')
     .js('resources/js/charts/shop-chart.js', 'public/js')
-    .js('resources/js/charts/category-chart.js', 'public/js');
+    .js('resources/js/charts/category-chart.js', 'public/js')
+    .js('resources/js/charts/market-share-chart.js', 'public/js');

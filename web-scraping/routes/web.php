@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShopeeAnalysis\MarketShare;
 use App\Http\Controllers\ShopeeAnalysis\ProductAnalysis;
 use App\Http\Controllers\ShopeeAnalysis\ShopeeCate;
 use App\Http\Controllers\ShopeeAnalysis\ShopAnalysis;
@@ -35,6 +36,10 @@ Route::group([
         Route::get('/chart/{id}', [ShopeeCate::class, 'showChart'])->name('cate.show-chart');
 
         Route::get('/chart/{id}/get', [ShopeeCate::class, 'getChart'])->name('cate.get-chart');
+
+        Route::get('/market-share-chart', [MarketShare::class, 'showMarketChart'])->name('market-share.show-chart');
+
+        Route::get('/market-share-chart/get', [MarketShare::class, 'getMarketChart'])->name('market-share.get-chart');
     });
 
     Route::group([

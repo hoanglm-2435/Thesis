@@ -18,6 +18,7 @@ class ProductRevenue extends Model
         'product_id',
         'cate_id',
         'name',
+        'url',
         'price',
         'sold_per_day',
         'revenue_per_day',

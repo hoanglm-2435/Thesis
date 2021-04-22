@@ -8,8 +8,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="text-black">
-                            Shopee Analysis -
-                            <a href="{{ $product->url }}"> {{ $product->name }}</a>
+                            <span>Product: <a href="{{ $product->url }}"> {{ $product->name }}</a></span>
                         </h1>
                     </div>
                     <div class="col-sm-6">

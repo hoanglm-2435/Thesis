@@ -38,12 +38,13 @@ $(document).ready(function() {
     });
 
     let $range = $("#filter-range");
+    let price_max = $("#price-max").val();
 
     $range.ionRangeSlider({
         min: 0,
-        max: 5000000,
+        max: price_max,
         from: 0,
-        to: 5000000,
+        to: price_max,
         step: 100000,
         type: 'double',
         postfix: " VND",
@@ -63,9 +64,9 @@ $(document).ready(function() {
        if (filterType === 'price') {
             instance.update({
                 min: 0,
-                max: 5000000,
+                max: price_max,
                 from: 0,
-                to: 5000000,
+                to: price_max,
                 step: 100000,
                 postfix: " VND",
             });
