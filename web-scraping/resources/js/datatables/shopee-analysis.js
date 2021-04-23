@@ -20,7 +20,13 @@ $(function () {
             url: route('shopee.get-shop', cateId),
         },
         columns: [
-            { data: 'id', name: 'id', className: 'text-center' },
+            {
+                data: "id",
+                className: 'text-nowrap text-center',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
             {
                 data: 'name',
                 name: 'name',
@@ -28,12 +34,12 @@ $(function () {
                     return `<a href="${full.url}">${full.name}</a>`;
                 }
             },
-            { data: 'product_count', name: 'product_count', className: 'text-center' },
-            { data: 'sold', name: 'sold', className: 'text-center' },
-            { data: 'revenue', name: 'revenue', className: 'text-center' },
-            { data: 'updated_at', name: 'updated_at', className: 'text-center' },
-            { data: 'products', name: 'products', className: 'text-center' },
-            { data: 'chart', className: 'text-center' },
+            { data: 'product_count', name: 'product_count', className: 'text-nowrap text-center' },
+            { data: 'sold', name: 'sold', className: 'text-nowrap text-center' },
+            { data: 'revenue', name: 'revenue', className: 'text-nowrap text-center' },
+            { data: 'updated_at', name: 'updated_at', className: 'text-nowrap text-center' },
+            { data: 'products', name: 'products', className: 'text-nowrap text-center' },
+            { data: 'chart', className: 'text-nowrap text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

@@ -17,13 +17,30 @@ $(function () {
             url: route('shop-offline.shop'),
         },
         columns: [
-            { data: 'id', name: 'id', className: 'text-center' },
+            {
+                data: "id",
+                className: 'text-nowrap text-center',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
             { data: 'name', name: 'name' },
             { data: 'rating', name: 'rating', className: 'text-center' },
-            { data: 'user_rating', name: 'user_rating', className: 'text-center' },
-            { data: 'city', name: 'city', className: 'text-center' },
+            { data: 'user_rating', name: 'user_rating', className: 'text-nowrap text-center' },
+            { data: 'city', name: 'city', className: 'text-nowrap text-center' },
             { data: 'address', name: 'address' },
-            { data: 'phone_number', name: 'phone_number', className: 'text-center' },
+            {
+                data: 'phone_number',
+                name: 'phone_number',
+                className: 'text-nowrap text-center',
+                render: function (data, type, full) {
+                    if (data) {
+                        return `<span>${data}</span>`;
+                    }
+
+                    return 'No phone number';
+                }
+            },
             { data: 'reviews', className: 'text-center' },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
@@ -70,7 +87,13 @@ $(function () {
                     },
                 },
                 columns: [
-                    { data: 'id', name: 'id', className: 'text-center' },
+                    {
+                        data: "id",
+                        className: 'text-nowrap text-center',
+                        render: function (data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        },
+                    },
                     { data: 'name', name: 'name' },
                     { data: 'rating', name: 'rating', className: 'text-center' },
                     { data: 'user_rating', name: 'user_rating', className: 'text-center' },

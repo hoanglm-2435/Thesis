@@ -31,7 +31,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt }}</b></h3>
+                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt ?? '' }}</b></h3>
                             </div>
                             <div class="mx-4 my-2 flex flex-column">
                                 <div class="d-flex align-items-center">

@@ -26,7 +26,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header row align-items-center d-flex">
-                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt }}</b></h3>
+                                <h3 class="card-title">Market analysis on the Shopee e-commerce platform is from <b>{{ $analysisAt ?? '' }}</b></h3>
                                 <a class="ml-auto" href="{{ route('market-share.show-chart') }}">
                                     <button
                                         title="Analysis Chart"
