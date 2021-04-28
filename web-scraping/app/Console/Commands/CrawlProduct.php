@@ -95,11 +95,11 @@ class CrawlProduct extends Command
         curl_setopt($ch, CURLOPT_URL, "https://banhang.shopee.vn/api/v2/login/");
         $response = curl_exec($ch);
 
-//        $createdAt = now()->format('Y-m-d h:i:s');
-        $createdAt = now()->addDays(1)->format('Y-m-d h:i:s');
+        $createdAt = now()->format('Y-m-d h:i:s');
+        // $createdAt = now()->addDays(1)->format('Y-m-d h:i:s');
 
-//        Product::truncate();
-//        ProductRevenue::truncate();
+        // Product::truncate();
+        // ProductRevenue::truncate();
         $shops = ShopeeMall::all();
 
         foreach ($shops as $shop) {
@@ -132,7 +132,7 @@ class CrawlProduct extends Command
                             'name' => $product['name'],
                             'url' => "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'],
                             'stock' => $product['stock'],
-                            'sold' => $product['sold'] + rand(1,3), // + rand(6,7)
+                            'sold' => $product['sold'],
                             'price' => $product['price']/100000,
                             'rating' => round($ratingStar, 2),
                             'reviews' => $product['cmt_count'],
@@ -144,7 +144,9 @@ class CrawlProduct extends Command
                             $oldTime = new Carbon($lastProduct->created_at);
 
                             if ($newTime->greaterThan($oldTime)) {
-                                $soldPerDay = $newProduct->sold - $lastProduct->sold;
+                                $soldPerDay = $newProduct->sold > $lastProduct->sold
+                                    ? $newProduct->sold - $lastProduct->sold
+                                    : 0;
                                 $revenuePerDay = $soldPerDay * $lastProduct->price;
 
                                 ProductRevenue::create([

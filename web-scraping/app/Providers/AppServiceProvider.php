@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,13 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $analysisAt = DB::table('products')
-            ->select('created_at')
-            ->orderBy('created_at', 'ASC')
-            ->first();
+        if (Schema::hasTable('products')) {
+            $analysisAt = DB::table('products')
+                ->select('created_at')
+                ->orderBy('created_at', 'ASC')
+                ->first();
 
-        if ($analysisAt) {
-            View::share('analysisAt', $analysisAt->created_at);
+            if ($analysisAt) {
+                View::share('analysisAt', $analysisAt->created_at);
+            }
         }
     }
 }

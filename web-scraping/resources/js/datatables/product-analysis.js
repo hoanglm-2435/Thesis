@@ -20,20 +20,26 @@ $(document).ready(function() {
             url: route('shopee.get-products', shopId),
         },
         columns: [
-            { data: 'id', className: 'text-center' },
+            {
+                data: "id",
+                className: 'text-nowrap text-center',
+                render: function (data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+            },
             {
                 data: 'name',
                 render: function (data, type, full) {
                     return `<a href="${full.url}">${full.name}</a>`;
                 }
             },
-            { data: 'price', className: 'text-center' },
-            { data: 'sold', className: 'text-center' },
-            { data: 'revenue', className: 'text-center' },
-            { data: 'rating', className: 'text-center' },
-            { data: 'updated_at', className: 'text-center' },
-            { data: 'reviews', className: 'text-center' },
-            { data: 'chart', className: 'text-center' },
+            { data: 'price', className: 'text-nowrap text-center' },
+            { data: 'sold', className: 'text-nowrap text-center' },
+            { data: 'revenue', className: 'text-nowrap text-center' },
+            { data: 'rating', className: 'text-nowrap text-center' },
+            { data: 'updated_at', className: 'text-nowrap text-center' },
+            { data: 'reviews', className: 'text-nowrap text-center' },
+            { data: 'chart', className: 'text-nowrap text-center' },
         ]
     });
 
@@ -126,20 +132,26 @@ $(document).ready(function() {
                 },
             },
             columns: [
-                { data: 'id', className: 'text-center' },
+                {
+                    data: "id",
+                    className: 'text-nowrap text-center',
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    },
+                },
                 {
                     data: 'name',
                     render: function (data, type, full) {
                         return `<a href="${full.url}">${full.name}</a>`;
                     }
                 },
-                { data: 'price', className: 'text-center' },
-                { data: 'sold', className: 'text-center' },
-                { data: 'revenue', className: 'text-center' },
-                { data: 'rating', className: 'text-center' },
-                { data: 'updated_at', className: 'text-center' },
-                { data: 'reviews', className: 'text-center' },
-                { data: 'chart', className: 'text-center' },
+                { data: 'price', className: 'text-nowrap text-center' },
+                { data: 'sold', className: 'text-nowrap text-center' },
+                { data: 'revenue', className: 'text-nowrap text-center' },
+                { data: 'rating', className: 'text-nowrap text-center' },
+                { data: 'updated_at', className: 'text-nowrap text-center' },
+                { data: 'reviews', className: 'text-nowrap text-center' },
+                { data: 'chart', className: 'text-nowrap text-center' },
             ]
         });
     }
