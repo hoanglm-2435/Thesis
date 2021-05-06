@@ -29,7 +29,7 @@ class ShopAnalysis extends Controller
 
         foreach ($shops as $shop) {
             $revenues[] = DB::table('product_revenue')
-                ->selectRaw('shop_id, created_at as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('shop_id', $shop->id)
                 ->get();
         }
