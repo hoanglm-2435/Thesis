@@ -33,7 +33,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="shopChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    <canvas id="shopChart" style="height: 450px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                                 <h3 class="card-title">Product Chart</h3>
                             </div>
                             <div class="card-body">
-                                <canvas id="productChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                <canvas id="productChart" style="height: 450px; max-width: 100%;"></canvas>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="soldChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    <canvas id="soldChart" style="height: 450px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="chart">
-                                    <canvas id="revenueChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    <canvas id="revenueChart" style="height: 450px; max-width: 100%;"></canvas>
                                 </div>
                             </div>
                         </div>

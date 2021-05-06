@@ -48,7 +48,7 @@
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
                                         <th>Updated At</th>
-                                        <th>Shop List</th>
+                                        <th>View Shops</th>
                                         <th>Analysis Chart</th>
                                     </tr>
                                     </thead>
@@ -63,7 +63,7 @@
                                         <th>Sold</th>
                                         <th>Revenue (VND)</th>
                                         <th>Updated At</th>
-                                        <th>Shop List</th>
+                                        <th>View Shops</th>
                                         <th>Analysis Chart</th>
                                     </tr>
                                     </tfoot>

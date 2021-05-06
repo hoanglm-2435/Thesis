@@ -22,7 +22,7 @@ class ShopeeCate extends Controller
         $revenues = array();
         foreach ($categories as $category) {
             $revenues[] = DB::table('product_revenue')
-                ->selectRaw('cate_id, created_at as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('cate_id', $category->id)
                 ->get();
         }

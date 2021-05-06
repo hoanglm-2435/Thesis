@@ -111,7 +111,7 @@ class ProductAnalysis extends Controller
         $revenues = array();
         foreach ($products as $product) {
             $revenues[] = DB::table('product_revenue')
-                ->selectRaw('url, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, created_at as updated_at')
+                ->selectRaw('url, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, MAX(created_at) as updated_at')
                 ->where('url', $product->url)
                 ->get();
         }
