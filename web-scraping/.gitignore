@@ -12,13 +12,9 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 .idea
-/public/bower_components/*
-.bowerrc
-bower.json
 package-lock.json
 public/css
 public/js
 public/mix-manifest.json
 resources/sass
 resources/js/components
-public/img
