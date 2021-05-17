@@ -17,14 +17,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes();
 
 Route::group([
     'prefix' => 'shopee-analysis',
     'namespace' => 'ShopeeAnalysis',
+    'middleware' => 'auth',
 ], function () {
     Route::group([
         'prefix' => 'cate',
@@ -74,6 +72,7 @@ Route::group([
 Route::group([
     'prefix' => 'shop-offline',
     'namespace' => 'ShopOffline',
+    'middleware' => 'auth',
 ], function () {
     Route::get('/', [GoogleMaps::class, 'showShop'])->name('shop-offline');
 
