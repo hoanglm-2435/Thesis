@@ -72,6 +72,15 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                    Logout
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    {{ csrf_field() }}
+                </form>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->

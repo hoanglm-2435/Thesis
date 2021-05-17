@@ -11,8 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 mix.disableNotifications();
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css')
+mix.postCss('resources/css/app.css', 'public/css')
     .js('resources/js/show-comments.js', 'public/js')
     .js('resources/js/datatables/product-analysis.js', 'public/js')
     .js('resources/js/datatables/shopee-analysis.js', 'public/js')
