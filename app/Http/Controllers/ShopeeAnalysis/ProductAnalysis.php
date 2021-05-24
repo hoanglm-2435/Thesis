@@ -30,13 +30,12 @@ class ProductAnalysis extends Controller
     public function getProducts($shopId)
     {
         $products = Product::where('shop_id', $shopId)
-            ->select('id', 'name', 'url', 'price', 'rating')
-            ->groupBy('name')
+            ->selectRaw('id, name, url, price, rating')
             ->get();
 
-        $revenues = $this->getRevenue($products);
+        $revenues = $this->getRevenue($products->unique('name'));
 
-        return DataTables::of($products)
+        return DataTables::of($products->unique('name'))
             ->addColumn('price', function ($value) {
                 return number_format($value->price, 0, '', ',');
             })
@@ -110,10 +109,15 @@ class ProductAnalysis extends Controller
     {
         $revenues = array();
         foreach ($products as $product) {
-            $revenues[] = DB::table('product_revenue')
+            $revenue = DB::table('product_revenue')
                 ->selectRaw('url, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, MAX(created_at) as updated_at')
                 ->where('url', $product->url)
+                ->groupBy('url')
                 ->get();
+
+            if ($revenue->first() && $revenue->first()->url) {
+                $revenues[] = $revenue;
+            }
         }
 
         return $revenues;
@@ -152,18 +156,17 @@ class ProductAnalysis extends Controller
     {
         $products = Product::where('shop_id', $shopId)
             ->select('id', 'name', 'url', 'price', 'rating')
-            ->groupBy('name')
             ->get();
 
-        $revenues = $this->getRevenue($products);
+        $revenues = $this->getRevenue($products->unique('name'));
 
         $filterType = $request->input('filterType');
         $minRange = $request->input('minRange');
         $maxRange = $request->input('maxRange');
 
-        $products = collect($products)->whereBetween($filterType, [$minRange, $maxRange]);
+        $products = collect($products->unique('name'))->whereBetween($filterType, [$minRange, $maxRange]);
 
-        return DataTables::of($products)
+        return DataTables::of($products->unique('name'))
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
                     if($revenue->first()->url === $value->url) {
@@ -247,12 +250,12 @@ class ProductAnalysis extends Controller
             ->select(
                 DB::raw('SUM(sold_per_day) as sum_sold'),
                 DB::raw('SUM(revenue_per_day) as sum_revenue'),
-                DB::raw('MONTH(created_at) as month')
+                DB::raw('EXTRACT(MONTH FROM created_at) as month')
             )
             ->whereYear('created_at', $year)
             ->where('url', $product->url)
             ->where('shop_id', $product->shop_id)
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->get();
 
         $sumRevenue = array_fill(0, 11, 0);

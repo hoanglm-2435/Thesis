@@ -21,10 +21,15 @@ class ShopeeCate extends Controller
 
         $revenues = array();
         foreach ($categories as $category) {
-            $revenues[] = DB::table('product_revenue')
-                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+             $revenue = DB::table('product_revenue')
+                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(DISTINCT name) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('cate_id', $category->id)
+                ->groupBy('cate_id')
                 ->get();
+
+             if ($revenue->first() && $revenue->first()->cate_id) {
+                 $revenues[] = $revenue;
+             }
         }
 
         return DataTables::of($categories)
@@ -108,11 +113,11 @@ class ShopeeCate extends Controller
             ->select(
                 DB::raw('SUM(sold_per_day) as sum_sold'),
                 DB::raw('SUM(revenue_per_day) as sum_revenue'),
-                DB::raw('MONTH(created_at) as month')
+                DB::raw('EXTRACT(MONTH FROM created_at) as month')
             )
             ->whereYear('created_at', $year)
             ->where('cate_id', $cateId)
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->get();
 
         $sumRevenue = array_fill(0, 11, 0);

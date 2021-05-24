@@ -28,10 +28,15 @@ class ShopAnalysis extends Controller
         $revenues = array();
 
         foreach ($shops as $shop) {
-            $revenues[] = DB::table('product_revenue')
-                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(*) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+            $revenue = DB::table('product_revenue')
+                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(DISTINCT name) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('shop_id', $shop->id)
+                ->groupBy('shop_id')
                 ->get();
+
+            if ($revenue->first() && $revenue->first()->shop_id) {
+                $revenues[] = $revenue;
+            }
         }
 
         return DataTables::of(collect($shops))
@@ -112,11 +117,11 @@ class ShopAnalysis extends Controller
             ->select(
                 DB::raw('SUM(sold_per_day) as sum_sold'),
                 DB::raw('SUM(revenue_per_day) as sum_revenue'),
-                DB::raw('MONTH(created_at) as month')
+                DB::raw('EXTRACT(MONTH FROM created_at) as month')
             )
             ->whereYear('created_at', $year)
             ->where('shop_id', $shopId)
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->get();
 
         $sumRevenue = array_fill(0, 11, 0);

@@ -31,13 +31,13 @@ class MarketShare extends Controller
             $sumData[] = DB::table('product_revenue')
                 ->select(
                     DB::raw('cate_id'),
-                    DB::raw('COUNT(*) as sum_product'),
+                    DB::raw('count(DISTINCT name) as sum_product'),
                     DB::raw('SUM(sold_per_day) as sum_sold'),
                     DB::raw('SUM(revenue_per_day) as sum_revenue'),
                 )
                 ->whereYear('created_at', $year)
                 ->where('cate_id', $cate->id)
-                ->groupBy(DB::raw('YEAR(created_at)'))
+                ->groupBy('cate_id', DB::raw('EXTRACT(YEAR FROM created_at)'))
                 ->first();
         }
 
@@ -46,9 +46,9 @@ class MarketShare extends Controller
         $sumProduct = array_fill(0, $categories->count(), 0);
 
         foreach ($sumData as $key => $sumForCate) {
-            $sumRevenue[$key] = $sumForCate->sum_revenue;
-            $sumSold[$key] = $sumForCate->sum_sold;
-            $sumProduct[$key] = $sumForCate->sum_product;
+            $sumRevenue[$key] = $sumForCate->sum_revenue ?? 0;
+            $sumSold[$key] = $sumForCate->sum_sold ?? 0;
+            $sumProduct[$key] = $sumForCate->sum_product ?? 0;
         }
 
         $dataChart = [

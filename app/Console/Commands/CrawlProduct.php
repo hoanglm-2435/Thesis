@@ -101,6 +101,9 @@ class CrawlProduct extends Command
         // Product::truncate();
         // ProductRevenue::truncate();
         $shops = ShopeeMall::all();
+        $lastProducts = DB::table('products')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
         foreach ($shops as $shop) {
             echo $shop->name."\n";
@@ -110,7 +113,7 @@ class CrawlProduct extends Command
 
             while ($newest <= $totalCount) {
                 $response = $this->getProductApi($shop->shop_id, $newest, $ch);
-                $data = $response["items"];
+                $data = $response["items"] ?? null;
 
                 if ($data != null) {
                     foreach ($data as $item) {
@@ -119,10 +122,9 @@ class CrawlProduct extends Command
                         echo $shop->category->name . ' - ' . $shop->name . ': ' . $product['name'];
                         echo "\n";
                         $url = "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'];
-                        $lastProduct = DB::table('products')
+                        $lastProduct = $lastProducts
                             ->where('url', $url)
                             ->where('shop_id', $shop->id)
-                            ->orderBy('created_at', 'DESC')
                             ->first();
 
                         $newProduct = Product::create([
