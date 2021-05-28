@@ -76,7 +76,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>List Reviews Of Place</h2>
+                    <span class="font-weight-bold">List Reviews Of Place</span>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>

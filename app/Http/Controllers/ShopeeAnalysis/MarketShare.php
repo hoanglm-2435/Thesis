@@ -17,7 +17,7 @@ class MarketShare extends Controller
     {
         $year = now()->year;
 
-        $categories = ShopeeCategory::all();
+        $categories = ShopeeCategory::selectRaw('id, name')->get();
 
         $cateName = array();
         $color = array();
@@ -31,7 +31,7 @@ class MarketShare extends Controller
             $sumData[] = DB::table('product_revenue')
                 ->select(
                     DB::raw('cate_id'),
-                    DB::raw('count(DISTINCT name) as sum_product'),
+                    DB::raw('count(DISTINCT url) as sum_product'),
                     DB::raw('SUM(sold_per_day) as sum_sold'),
                     DB::raw('SUM(revenue_per_day) as sum_revenue'),
                 )
@@ -41,9 +41,10 @@ class MarketShare extends Controller
                 ->first();
         }
 
-        $sumRevenue = array_fill(0, $categories->count(), 0);
-        $sumSold = array_fill(0, $categories->count(), 0);
-        $sumProduct = array_fill(0, $categories->count(), 0);
+        $cateCount = $categories->count();
+        $sumRevenue = array_fill(0, $cateCount, 0);
+        $sumSold = array_fill(0, $cateCount, 0);
+        $sumProduct = array_fill(0, $cateCount, 0);
 
         foreach ($sumData as $key => $sumForCate) {
             $sumRevenue[$key] = $sumForCate->sum_revenue ?? 0;

@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Product;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class CrawlComment extends Command
 {
@@ -92,10 +93,16 @@ class CrawlComment extends Command
         curl_setopt($ch, CURLOPT_URL, "https://banhang.shopee.vn/api/v2/login/");
         $response = curl_exec($ch);
 
-        $createdAt = now()->format('Y-m-d h:i:s');
+//        $createdAt = now()->format('Y-m-d h:i:s');
 
-        Comment::truncate();
-        $products = Product::all();
+//        Comment::truncate();
+        $lastComment = DB::table('comments')->selectRaw('max(product_id) as product_id')->first();
+        $productID = $lastComment->product_id ?? 1;
+        $products = Product::selectRaw('min(id) as id, name, url, max(reviews) as reviews, max(shop_id) as shop_id')
+            ->where('id', '>=', $productID)
+            ->groupBy('name', 'url')
+            ->orderBy('id', 'ASC')
+            ->get();
 
         foreach ($products as $product) {
             echo $product->name . "\n";
@@ -114,7 +121,11 @@ class CrawlComment extends Command
                             echo "\n";
                             $time = date('Y-m-d h:i:s', $item['mtime']);
 
-                            Comment::create([
+                            Comment::updateOrCreate([
+                                'product_id' => $product->id,
+                                'author' => $item['author_username'],
+                                'time' => $time,
+                            ], [
                                 'product_id' => $product->id,
                                 'author' => $item['author_username'],
                                 'rating' => $item['rating_star'],

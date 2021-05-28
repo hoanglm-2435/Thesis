@@ -19,7 +19,9 @@ class GoogleMaps extends Controller
 
     public function getShop()
     {
-        $shops = ShopOffline::all();
+        $shops = DB::table('shop_offline')
+            ->select('id', 'place_id', 'name', 'city', 'address', 'phone_number', 'rating', 'user_rating')
+            ->get();
 
         return Datatables::of($shops)
             ->addColumn('reviews', function ($value) {

@@ -6,7 +6,7 @@ var __webpack_exports__ = {};
 $(function () {
   $("#data-table").DataTable({
     dom: 'Bfrtip',
-    paging: true,
+    paging: false,
     lengthChange: false,
     ordering: true,
     info: true,
@@ -56,10 +56,12 @@ $(function () {
     }, {
       data: 'shop_list',
       name: 'shop_list',
-      className: 'text-nowrap text-center'
+      className: 'text-nowrap text-center',
+      orderable: false
     }, {
       data: 'chart',
-      className: 'text-nowrap text-center'
+      className: 'text-nowrap text-center',
+      orderable: false
     }]
   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

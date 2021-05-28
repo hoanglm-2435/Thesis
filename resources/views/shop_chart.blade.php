@@ -7,11 +7,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="text-black">
-                            Category:
-                            <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a>
-                            - Shop:
-                            <a href="{{ $shop->url }}"> {{ $shop->name }}</a>
+                        <h1 class="font-weight-bold">
+                            Analysis Chart
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -37,11 +34,18 @@
                     <div class="col-md-12">
                         <div class="card card-success">
                             <div class="card-header">
-                                <h3 class="card-title">Statistical Tables</h3>
+                                <h3 class="card-title">
+                                    <span class="font-weight-bold">
+                                        Category:
+                                        <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a>
+                                        - Shop:
+                                        <a href="{{ $shop->url }}"> {{ $shop->name }}</a>
+                                    </span>
+                                </h3>
                             </div>
-                            <div class="card-body" style="height: 500px">
+                            <div class="card-body" style="min-height: 500px">
                                 <div class="chart">
-                                    <canvas id="barChart" width="400px" height="150px"></canvas>
+                                    <canvas id="barChart" width="400px" height="180px"></canvas>
                                 </div>
                             </div>
                         </div>

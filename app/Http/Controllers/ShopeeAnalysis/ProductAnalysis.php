@@ -19,8 +19,9 @@ class ProductAnalysis extends Controller
         $cateID = $shop->category()->first()->id;
 
         $priceMax = DB::table('products')
-            ->selectRaw('MAX(price) as price_max')
+            ->selectRaw('shop_id, MAX(price) as price_max')
             ->where('shop_id', $shopId)
+            ->groupBy('shop_id')
             ->get();
         $priceMax = $priceMax[0]->price_max;
 
@@ -29,13 +30,15 @@ class ProductAnalysis extends Controller
 
     public function getProducts($shopId)
     {
-        $products = Product::where('shop_id', $shopId)
-            ->selectRaw('id, name, url, price, rating')
-            ->get();
+        $products = DB::table('products')
+            ->selectRaw('id, name, url, price, rating, shop_id')
+            ->where('shop_id', $shopId)
+            ->get()
+            ->unique('url');
 
-        $revenues = $this->getRevenue($products->unique('name'));
+        $revenues = $this->getRevenue($products);
 
-        return DataTables::of($products->unique('name'))
+        return DataTables::of($products)
             ->addColumn('price', function ($value) {
                 return number_format($value->price, 0, '', ',');
             })
@@ -45,6 +48,8 @@ class ProductAnalysis extends Controller
                         return $revenue->first()->sold;
                     };
                 }
+
+                return 0;
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -52,6 +57,8 @@ class ProductAnalysis extends Controller
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
+
+                return 0;
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -62,6 +69,8 @@ class ProductAnalysis extends Controller
                         return $diffTime;
                     };
                 }
+
+                return 'Not update';
             })
             ->addColumn('reviews', function ($value) {
                 $comment = DB::table('comments')
@@ -112,6 +121,7 @@ class ProductAnalysis extends Controller
             $revenue = DB::table('product_revenue')
                 ->selectRaw('url, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue, MAX(created_at) as updated_at')
                 ->where('url', $product->url)
+                ->whereMonth('created_at', now()->month)
                 ->groupBy('url')
                 ->get();
 
@@ -154,11 +164,13 @@ class ProductAnalysis extends Controller
 
     public function filter(Request $request, $shopId)
     {
-        $products = Product::where('shop_id', $shopId)
-            ->select('id', 'name', 'url', 'price', 'rating')
-            ->get();
+        $products = DB::table('products')
+            ->selectRaw('id, name, url, price, rating, shop_id')
+            ->where('shop_id', $shopId)
+            ->get()
+            ->unique('url');
 
-        $revenues = $this->getRevenue($products->unique('name'));
+        $revenues = $this->getRevenue($products);
 
         $filterType = $request->input('filterType');
         $minRange = $request->input('minRange');
@@ -173,6 +185,8 @@ class ProductAnalysis extends Controller
                         return $revenue->first()->sold;
                     };
                 }
+
+                return 0;
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -180,6 +194,8 @@ class ProductAnalysis extends Controller
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
+
+                return 0;
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -190,6 +206,8 @@ class ProductAnalysis extends Controller
                         return $diffTime;
                     };
                 }
+
+                return 'Not update';
             })
             ->addColumn('reviews', function ($value) {
                 $comment = DB::table('comments')

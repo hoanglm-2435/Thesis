@@ -38,8 +38,8 @@ $(document).ready(function() {
             { data: 'revenue', className: 'text-nowrap text-center' },
             { data: 'rating', className: 'text-nowrap text-center' },
             { data: 'updated_at', className: 'text-nowrap text-center' },
-            { data: 'reviews', className: 'text-nowrap text-center' },
-            { data: 'chart', className: 'text-nowrap text-center' },
+            { data: 'reviews', className: 'text-nowrap text-center', orderable: false },
+            { data: 'chart', className: 'text-nowrap text-center', orderable: false },
         ]
     });
 
@@ -150,8 +150,8 @@ $(document).ready(function() {
                 { data: 'revenue', className: 'text-nowrap text-center' },
                 { data: 'rating', className: 'text-nowrap text-center' },
                 { data: 'updated_at', className: 'text-nowrap text-center' },
-                { data: 'reviews', className: 'text-nowrap text-center' },
-                { data: 'chart', className: 'text-nowrap text-center' },
+                { data: 'reviews', className: 'text-nowrap text-center', orderable: false },
+                { data: 'chart', className: 'text-nowrap text-center', orderable: false },
             ]
         });
     }

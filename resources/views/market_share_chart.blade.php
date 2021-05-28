@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="text-black">
+                        <h1 class="font-weight-bold text-nowrap">
                             Analysis of market share of the industry on Shopee in {{ date('Y') }}
                         </h1>
                     </div>
@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Shop Chart</h3>
+                                <h3 class="card-title font-weight-bold">Shop Chart</h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
@@ -40,7 +40,7 @@
 
                         <div class="card card-cyan">
                             <div class="card-header">
-                                <h3 class="card-title">Product Chart</h3>
+                                <h3 class="card-title font-weight-bold">Product Chart</h3>
                             </div>
                             <div class="card-body">
                                 <canvas id="productChart" style="height: 450px; max-width: 100%;"></canvas>
@@ -50,7 +50,7 @@
                     <div class="col-md-6">
                         <div class="card card-success">
                             <div class="card-header">
-                                <h3 class="card-title">Sold Chart</h3>
+                                <h3 class="card-title font-weight-bold">Sold Chart</h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">
@@ -61,7 +61,7 @@
 
                         <div class="card card-lightblue">
                             <div class="card-header">
-                                <h3 class="card-title">Revenue Chart</h3>
+                                <h3 class="card-title font-weight-bold">Revenue Chart</h3>
                             </div>
                             <div class="card-body">
                                 <div class="chart">

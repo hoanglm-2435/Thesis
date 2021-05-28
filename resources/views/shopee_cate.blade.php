@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Shopee Analysis</h1>
+                        <h1 class="font-weight-bold">Shopee Analysis</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -45,8 +45,8 @@
                                         <th>Category</th>
                                         <th>Shop Count</th>
                                         <th>Product Count</th>
-                                        <th>Sold</th>
-                                        <th>Revenue (VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Updated At</th>
                                         <th>View Shops</th>
                                         <th>Analysis Chart</th>
@@ -60,8 +60,8 @@
                                         <th>Category</th>
                                         <th>Shop Count</th>
                                         <th>Product Count</th>
-                                        <th>Sold</th>
-                                        <th>Revenue (VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Updated At</th>
                                         <th>View Shops</th>
                                         <th>Analysis Chart</th>

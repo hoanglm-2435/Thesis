@@ -89,7 +89,10 @@ $(document).ready(function () {
                 display: true
               },
               ticks: {
-                stepSize: 100
+                beginAtZero: true,
+                callback: function callback(value) {
+                  return value;
+                }
               },
               id: "sold"
             }]

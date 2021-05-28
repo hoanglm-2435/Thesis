@@ -17,19 +17,20 @@ class ShopeeCate extends Controller
 
     public function getCate()
     {
-        $categories = ShopeeCategory::all();
+        $categories = ShopeeCategory::selectRaw('id, name, url')->get();
 
         $revenues = array();
         foreach ($categories as $category) {
-             $revenue = DB::table('product_revenue')
-                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(DISTINCT name) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+            $revenue = DB::table('product_revenue')
+                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(DISTINCT url) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('cate_id', $category->id)
+                ->whereMonth('created_at', now()->month)
                 ->groupBy('cate_id')
                 ->get();
 
-             if ($revenue->first() && $revenue->first()->cate_id) {
-                 $revenues[] = $revenue;
-             }
+            if ($revenue->first() && $revenue->first()->cate_id) {
+                $revenues[] = $revenue;
+            }
         }
 
         return DataTables::of($categories)
@@ -38,28 +39,28 @@ class ShopeeCate extends Controller
             })
             ->addColumn('product_count', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->cate_id === $value->id) {
+                    if ($revenue->first()->cate_id === $value->id) {
                         return $revenue->first()->product_count;
                     };
                 }
             })
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->cate_id === $value->id) {
+                    if ($revenue->first()->cate_id === $value->id) {
                         return $revenue->first()->sold;
                     };
                 }
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->cate_id === $value->id) {
+                    if ($revenue->first()->cate_id === $value->id) {
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
-                    if($revenue->first()->cate_id === $value->id) {
+                    if ($revenue->first()->cate_id === $value->id) {
                         $updated_at = new Carbon($revenue->first()->updated_at);
                         $diffTime = Carbon::now()->diffForHumans($updated_at);
 

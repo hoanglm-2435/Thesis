@@ -51,10 +51,12 @@ $(document).ready(function () {
       className: 'text-nowrap text-center'
     }, {
       data: 'reviews',
-      className: 'text-nowrap text-center'
+      className: 'text-nowrap text-center',
+      orderable: false
     }, {
       data: 'chart',
-      className: 'text-nowrap text-center'
+      className: 'text-nowrap text-center',
+      orderable: false
     }]
   });
   var $range = $("#filter-range");
@@ -170,10 +172,12 @@ $(document).ready(function () {
         className: 'text-nowrap text-center'
       }, {
         data: 'reviews',
-        className: 'text-nowrap text-center'
+        className: 'text-nowrap text-center',
+        orderable: false
       }, {
         data: 'chart',
-        className: 'text-nowrap text-center'
+        className: 'text-nowrap text-center',
+        orderable: false
       }]
     });
   }

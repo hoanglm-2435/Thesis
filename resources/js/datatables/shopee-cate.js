@@ -1,7 +1,7 @@
 $(function () {
     $("#data-table").DataTable({
         dom: 'Bfrtip',
-        paging: true,
+        paging: false,
         lengthChange: false,
         ordering: true,
         info: true,
@@ -36,8 +36,8 @@ $(function () {
             { data: 'sold', name: 'sold', className: 'text-nowrap text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-nowrap text-center' },
             { data: 'updated_at', name: 'updated_at', className: 'text-nowrap text-center' },
-            { data: 'shop_list', name: 'shop_list', className: 'text-nowrap text-center' },
-            { data: 'chart', className: 'text-nowrap text-center' },
+            { data: 'shop_list', name: 'shop_list', className: 'text-nowrap text-center', orderable: false },
+            { data: 'chart', className: 'text-nowrap text-center', orderable: false },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

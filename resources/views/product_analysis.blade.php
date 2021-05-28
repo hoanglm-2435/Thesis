@@ -7,9 +7,9 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="text-black">
-                            <span>Category: <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a><br></span>
-                            <span>Shop: <a href="{{ $shop->url }}"> {{ $shop->name }}</a></span>
+                        <h1 class="font-weight-bold">
+                            <span>Category: <a href="{{ $shop->category->url }}"> {{ $shop->category->name  }}</a></span>
+                            <span> - Shop: <a href="{{ $shop->url }}"> {{ $shop->name }}</a></span>
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -52,8 +52,8 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold Total</th>
-                                        <th>Revenue Total(VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
@@ -67,8 +67,8 @@
                                         <th>ID</th>
                                         <th>Product Name</th>
                                         <th>Price(VND)</th>
-                                        <th>Sold Total</th>
-                                        <th>Revenue Total(VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Rating</th>
                                         <th>Updated At</th>
                                         <th>Reviews</th>
@@ -87,7 +87,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content modal-fullscreen">
                 <div class="modal-header">
-                    <<a href="" class="product-name"></a>
+                    <span class="font-weight-bold">List Comments Of Product: <a href="" class="product-name"></a></span>
                     <button type="button" class="close"
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>

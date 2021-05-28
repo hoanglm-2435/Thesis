@@ -38,8 +38,8 @@ $(function () {
             { data: 'sold', name: 'sold', className: 'text-nowrap text-center' },
             { data: 'revenue', name: 'revenue', className: 'text-nowrap text-center' },
             { data: 'updated_at', name: 'updated_at', className: 'text-nowrap text-center' },
-            { data: 'products', name: 'products', className: 'text-nowrap text-center' },
-            { data: 'chart', className: 'text-nowrap text-center' },
+            { data: 'products', name: 'products', className: 'text-nowrap text-center', orderable: false },
+            { data: 'chart', className: 'text-nowrap text-center', orderable: false },
         ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });

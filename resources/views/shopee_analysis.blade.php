@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>
+                        <h1 class="font-weight-bold">
                             Category:
                             <a href="{{ $cate->url }}"> {{ $cate->name }}</a>
                         </h1>
@@ -40,8 +40,8 @@
                                         <th>ID</th>
                                         <th>Shop Name</th>
                                         <th>Product Count</th>
-                                        <th>Sold</th>
-                                        <th>Revenue (VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Updated At</th>
                                         <th>View Products</th>
                                         <th>Analysis Chart</th>
@@ -54,8 +54,8 @@
                                         <th>ID</th>
                                         <th>Shop Name</th>
                                         <th>Product Count</th>
-                                        <th>Sold</th>
-                                        <th>Revenue (VND)</th>
+                                        <th>Sold/Month</th>
+                                        <th>Revenue/Month(VND)</th>
                                         <th>Updated At</th>
                                         <th>View Products</th>
                                         <th>Analysis Chart</th>

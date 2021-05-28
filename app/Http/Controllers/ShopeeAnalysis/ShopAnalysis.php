@@ -21,7 +21,8 @@ class ShopAnalysis extends Controller
 
     public function getShop($cateId)
     {
-        $shops = ShopeeMall::where('cate_id', $cateId)
+        $shops = DB::table('shopee_mall')
+            ->where('cate_id', $cateId)
             ->select('id', 'name', 'url')
             ->get();
 
@@ -29,8 +30,9 @@ class ShopAnalysis extends Controller
 
         foreach ($shops as $shop) {
             $revenue = DB::table('product_revenue')
-                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(DISTINCT name) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(DISTINCT url) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('shop_id', $shop->id)
+                ->whereMonth('created_at', now()->month)
                 ->groupBy('shop_id')
                 ->get();
 
@@ -72,7 +74,7 @@ class ShopAnalysis extends Controller
                 }
             })
             ->addColumn('products', function ($value) {
-                $url = route('shopee.show-products', $value['id']);
+                $url = route('shopee.show-products', $value->id);
 
                 return '
                     <a href="' . $url . '">
