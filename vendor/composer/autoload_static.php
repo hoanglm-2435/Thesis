@@ -21,9 +21,9 @@ class ComposerStaticInit4525f8b0bd6ced324b9e02584797a766
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
@@ -36,6 +36,7 @@ class ComposerStaticInit4525f8b0bd6ced324b9e02584797a766
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
+        '1d5d1218959948b643380e3f162c57ce' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/helpers.php',
         '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
     );
 
@@ -91,6 +92,7 @@ class ComposerStaticInit4525f8b0bd6ced324b9e02584797a766
             'Symfony\\Component\\ErrorHandler\\' => 31,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'SKAgarwal\\GoogleApi\\' => 20,
         ),
         'R' => 
         array (
@@ -326,6 +328,10 @@ class ComposerStaticInit4525f8b0bd6ced324b9e02584797a766
         'Symfony\\Component\\Console\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
+        ),
+        'SKAgarwal\\GoogleApi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/skagarwal/google-places-api/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -4503,6 +4509,15 @@ class ComposerStaticInit4525f8b0bd6ced324b9e02584797a766
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\GooglePlacesApiException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/GooglePlacesApiException.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\InvalidRequestException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/InvalidRequestException.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\NotImplementedException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/NotImplementedException.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\OverQueryLimitException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/OverQueryLimitException.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\RequestDeniedException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/RequestDeniedException.php',
+        'SKAgarwal\\GoogleApi\\Exceptions\\UnknownErrorException' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Exceptions/UnknownErrorException.php',
+        'SKAgarwal\\GoogleApi\\Facade' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/Facade.php',
+        'SKAgarwal\\GoogleApi\\PlacesApi' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/PlacesApi.php',
+        'SKAgarwal\\GoogleApi\\ServiceProvider' => __DIR__ . '/..' . '/skagarwal/google-places-api/src/ServiceProvider.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',

@@ -71,6 +71,7 @@ final class Versions
   'ralouphie/getallheaders' => '3.0.3@120b605dfeb996808c31b6477290a714d356e822',
   'ramsey/collection' => '1.1.3@28a5c4ab2f5111db6a60b2b4ec84057e0f43b9c1',
   'ramsey/uuid' => '4.1.1@cd4032040a750077205918c86049aa0f43d22947',
+  'skagarwal/google-places-api' => '1.7.2@2f2b474b706e362778c5642ac1524619afda9126',
   'swiftmailer/swiftmailer' => 'v6.2.7@15f7faf8508e04471f666633addacf54c0ab5933',
   'symfony/console' => 'v5.2.6@35f039df40a3b335ebf310f244cb242b3a83ac8d',
   'symfony/css-selector' => 'v5.2.4@f65f217b3314504a1ec99c2d6ef69016bb13490f',
@@ -145,7 +146,7 @@ final class Versions
   'sebastian/type' => '2.3.1@81cd61ab7bbf2de744aba0ea61fae32f721df3d2',
   'sebastian/version' => '3.0.2@c6c1022351a901512170118436c764e473f6de8c',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'laravel/laravel' => 'dev-main@4878475fc265e6f5c8cc048b1fd211fd161bbd2b',
+  'laravel/laravel' => 'dev-main@1ff6c94808a7320fc1442abab60c768d036b06fa',
 );
 
     private function __construct()
