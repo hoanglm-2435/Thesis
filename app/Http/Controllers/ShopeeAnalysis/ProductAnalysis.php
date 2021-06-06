@@ -30,6 +30,7 @@ class ProductAnalysis extends Controller
 
     public function getProducts($shopId)
     {
+//        Product::where('cate_id', '!=', 8)->where('created_at', '<', '2021-06-09 01:01:13')->whereMonth('created_at', '=', '06')->delete();
         $products = DB::table('products')
             ->selectRaw('id, name, url, price, rating, shop_id')
             ->where('shop_id', $shopId)

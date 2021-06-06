@@ -22,7 +22,7 @@ class ShopeeCate extends Controller
         $revenues = array();
         foreach ($categories as $category) {
             $revenue = DB::table('product_revenue')
-                ->selectRaw('cate_id, MAX(created_at) as updated_at, count(DISTINCT url) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('cate_id, MAX(created_at) as updated_at, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('cate_id', $category->id)
                 ->whereMonth('created_at', now()->month)
                 ->groupBy('cate_id')
@@ -37,12 +37,8 @@ class ShopeeCate extends Controller
             ->addColumn('shop_count', function ($value) {
                 return $value->shops()->count();
             })
-            ->addColumn('product_count', function ($value) use ($revenues) {
-                foreach ($revenues as $revenue) {
-                    if ($revenue->first()->cate_id === $value->id) {
-                        return $revenue->first()->product_count;
-                    };
-                }
+            ->addColumn('product_count', function ($value) {
+                return $value->shops()->sum('product_count');
             })
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -50,6 +46,8 @@ class ShopeeCate extends Controller
                         return $revenue->first()->sold;
                     };
                 }
+
+                return 0;
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -57,6 +55,8 @@ class ShopeeCate extends Controller
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
+
+                return 0;
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -67,6 +67,8 @@ class ShopeeCate extends Controller
                         return $diffTime;
                     };
                 }
+
+                return 'Not Update';
             })
             ->addColumn('shop_list', function ($value) {
                 $url = route('shopee.show-shop', $value['id']);

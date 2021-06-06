@@ -31,7 +31,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('crawl:product')->dailyAt('00:01');
+        $schedule->command('crawl:shop')->dailyAt('00:00');
+        $schedule->command('crawl:product')->dailyAt('00:30');
     }
 
     /**

@@ -43,70 +43,36 @@ class CrawlProduct extends Command
      */
     public function handle()
     {
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36");
-        $cookie_jar = 'cookie_shopee.txt';
-        curl_file_create($cookie_jar);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_jar);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_jar);
-
-
-        // Request lấy cookie ban đầu
-        curl_setopt($ch, CURLOPT_URL, "https://shopee.vn/api/v0/buyer/login/");
-        curl_exec($ch);
-        // echo file_get_contents($cookie_jar) .'<br><br>';
-
-
-        //Khởi tạo các dữ liệu đầu vào cho request Login
-        $csrf_token = $this->csrftoken();
+        $cookie_shopee = 'cookie_shopee.txt';
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_shopee);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_shopee);
 
         $header = array(
-            'x-csrftoken: ' . $csrf_token,
+            'x-csrftoken: ' . $this->csrftoken(),
             'x-requested-with: XMLHttpRequest',
-            'referer: https://shopee.vn/api/v0/buyer/login/',
         );
-
-        $data = array(
-            "login_key" => 'hieu15011',
-            "login_type" => "username",
-            "password_hash" => $this->CryptPass('Thangnao?123'),
-            "captcha" => "",
-            "remember_me" => "true"
-        );
-        $data = http_build_query($data);
-
-        //Request login
-        curl_setopt($ch, CURLOPT_URL, "https://shopee.vn/api/v0/buyer/login/login_post/");
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLINFO_HEADER_OUT, false);
-        curl_setopt($ch, CURLOPT_COOKIE, "csrftoken=" . $csrf_token);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-//        curl_setopt($ch, CURLOPT_POSTFIELDSIZE, strlen($data));
+        curl_setopt($ch, CURLOPT_COOKIE, "csrftoken=" . $this->csrftoken());
         curl_setopt($ch, CURLOPT_POST, 1);
-        $response = curl_exec($ch);
-
-        // Request lấy thông tin tài khoản sau khi đã đăng nhập thành công
-        curl_setopt($ch, CURLOPT_URL, "https://banhang.shopee.vn/api/v2/login/");
-        $response = curl_exec($ch);
+        curl_exec($ch);
 
         $createdAt = now()->format('Y-m-d h:i:s');
-        // $createdAt = now()->addDays(1)->format('Y-m-d h:i:s');
 
         // Product::truncate();
         // ProductRevenue::truncate();
-        $shops = ShopeeMall::selectRaw('id, name, cate_id, shop_id')->get();
+        $shops = ShopeeMall::selectRaw('id, name, cate_id, shop_id, product_count')->get();
 
         foreach ($shops as $shop) {
-            echo $shop->name."\n";
             $newest = 0;
-            $responseFirst = $this->getProductApi($shop->shop_id, $newest, $ch);
-            $totalCount = $responseFirst['total_count'] ?? null;
+            $totalCount = $shop->product_count;
 
             while ($totalCount && $newest <= $totalCount) {
                 $response = $this->getProductApi($shop->shop_id, $newest, $ch);
@@ -116,13 +82,12 @@ class CrawlProduct extends Command
                     foreach ($data as $item) {
                         $product = Arr::get($item, 'item_basic');
                         $ratingStar = Arr::get($product['item_rating'], 'rating_star');
-                        echo $shop->category->name . ' - ' . $shop->name . ': ' . $product['name'];
-                        echo "\n";
+
                         $url = "https://shopee.vn/.-i." . $shop->shop_id . "." . $product['itemid'];
                         $lastProduct = DB::table('products')
-                            ->where('url', $url)
                             ->where('shop_id', $shop->id)
-                            ->latest()
+                            ->where('url', $url)
+                            ->latest('id')
                             ->first();
 
                         $newProduct = Product::create([
@@ -138,18 +103,20 @@ class CrawlProduct extends Command
                             'reviews' => $product['cmt_count'],
                             'created_at' => $createdAt,
                         ]);
+                        echo $shop->category->name . ': ' . $product['name'];
+                        echo "\n";
 
-                        if ($lastProduct) {
+                        if ($lastProduct && ($newProduct->sold > $lastProduct->sold)) {
                             $newTime = new Carbon($newProduct->created_at);
                             $oldTime = new Carbon($lastProduct->created_at);
+                            echo '----> New Revenue!!!';
+                            echo "\n";
 
                             if ($newTime->greaterThan($oldTime)) {
-                                $soldPerDay = $newProduct->sold > $lastProduct->sold
-                                    ? $newProduct->sold - $lastProduct->sold
-                                    : 0;
+                                $soldPerDay = $newProduct->sold - $lastProduct->sold;
                                 $revenuePerDay = $soldPerDay * $lastProduct->price;
 
-                                ProductRevenue::create([
+                                DB::table('product_revenue')->insert([
                                     'shop_id' => $shop->id,
                                     'product_id' => $newProduct->id,
                                     'cate_id' => $shop->cate_id,
@@ -176,8 +143,6 @@ class CrawlProduct extends Command
 
     function getProductApi($shopId, $newest, $ch)
     {
-        //Khởi tạo chung cho toàn bộ request bên dưới;
-        // echo $response;
         curl_setopt($ch, CURLOPT_PROXY, '');
         curl_setopt($ch, CURLOPT_POST, 0);
         echo "https://shopee.vn/api/v4/search/search_items?by=pop&limit=30&match_id="
@@ -192,19 +157,10 @@ class CrawlProduct extends Command
         return (json_decode($body, true));
     }
 
-    function CryptPass($pass)
-    {
-        return hash("sha256", md5($pass));
-    }
-
     function csrftoken()
     {
-        $karakter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        $PanjangKarakter = strlen($karakter);
-        $acakString = '';
-        for ($i = 0; $i < 32; $i++) {
-            $acakString .= $karakter[rand(0, $PanjangKarakter - 1)];
-        }
-        return $acakString;
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        return substr(str_shuffle($chars),0, strlen($chars));
     }
 }

@@ -23,14 +23,14 @@ class ShopAnalysis extends Controller
     {
         $shops = DB::table('shopee_mall')
             ->where('cate_id', $cateId)
-            ->select('id', 'name', 'url')
+            ->select('id', 'name', 'url', 'product_count')
             ->get();
 
         $revenues = array();
 
         foreach ($shops as $shop) {
             $revenue = DB::table('product_revenue')
-                ->selectRaw('shop_id, MAX(created_at) as updated_at, count(DISTINCT url) as product_count, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
+                ->selectRaw('shop_id, MAX(created_at) as updated_at, SUM(sold_per_day) as sold, SUM(revenue_per_day) as revenue')
                 ->where('shop_id', $shop->id)
                 ->whereMonth('created_at', now()->month)
                 ->groupBy('shop_id')
@@ -42,12 +42,8 @@ class ShopAnalysis extends Controller
         }
 
         return DataTables::of(collect($shops))
-            ->addColumn('product_count', function ($value) use ($revenues) {
-                foreach ($revenues as $revenue) {
-                    if($revenue->first()->shop_id === $value->id) {
-                        return $revenue->first()->product_count;
-                    };
-                }
+            ->addColumn('product_count', function ($value) {
+                return $value->product_count;
             })
             ->addColumn('sold', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -55,6 +51,8 @@ class ShopAnalysis extends Controller
                         return $revenue->first()->sold;
                     };
                 }
+
+                return 0;
             })
             ->addColumn('revenue', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -62,6 +60,8 @@ class ShopAnalysis extends Controller
                         return number_format($revenue->first()->revenue, 0, '', ',');
                     };
                 }
+
+                return 0;
             })
             ->addColumn('updated_at', function ($value) use ($revenues) {
                 foreach ($revenues as $revenue) {
@@ -72,6 +72,8 @@ class ShopAnalysis extends Controller
                         return $diffTime;
                     };
                 }
+
+                return 'Not update';
             })
             ->addColumn('products', function ($value) {
                 $url = route('shopee.show-products', $value->id);

@@ -23,15 +23,16 @@ class MarketShare extends Controller
         $color = array();
         $sumData = array();
         $totalShop = array();
+        $totalProduct = array();
         foreach ($categories as $cate) {
             $cateName[] = $cate->name;
             $color[] = '#' . dechex(rand(0,10000000));
             $totalShop[] = $cate->shops()->count();
+            $totalProduct[] = $cate->shops()->sum('product_count');
 
             $sumData[] = DB::table('product_revenue')
                 ->select(
                     DB::raw('cate_id'),
-                    DB::raw('count(DISTINCT url) as sum_product'),
                     DB::raw('SUM(sold_per_day) as sum_sold'),
                     DB::raw('SUM(revenue_per_day) as sum_revenue'),
                 )
@@ -44,12 +45,10 @@ class MarketShare extends Controller
         $cateCount = $categories->count();
         $sumRevenue = array_fill(0, $cateCount, 0);
         $sumSold = array_fill(0, $cateCount, 0);
-        $sumProduct = array_fill(0, $cateCount, 0);
 
         foreach ($sumData as $key => $sumForCate) {
             $sumRevenue[$key] = $sumForCate->sum_revenue ?? 0;
             $sumSold[$key] = $sumForCate->sum_sold ?? 0;
-            $sumProduct[$key] = $sumForCate->sum_product ?? 0;
         }
 
         $dataChart = [
@@ -58,7 +57,7 @@ class MarketShare extends Controller
             'total_sold' => $sumSold,
             'total_revenue' => $sumRevenue,
             'total_shop' => $totalShop,
-            'total_product' => $sumProduct,
+            'total_product' => $totalProduct,
         ];
 
         return response()->json($dataChart);

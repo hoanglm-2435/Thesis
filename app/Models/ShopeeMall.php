@@ -16,6 +16,7 @@ class ShopeeMall extends Model
         'url',
         'cate_id',
         'shop_id',
+        'product_count',
     ];
 
     public function products()
