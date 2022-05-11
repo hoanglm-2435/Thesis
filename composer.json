@@ -19,7 +19,8 @@
         "laravel/ui": "^3.2",
         "skagarwal/google-places-api": "^1.7",
         "tightenco/ziggy": "^1.1",
-        "yajra/laravel-datatables-oracle": "^9.18"
+        "yajra/laravel-datatables-oracle": "^9.18",
+        "zendframework/zendframework": "~3.1",
     },
     "require-dev": {
         "facade/ignition": "^2.5",
